@@ -135,7 +135,7 @@ Molecular dynamics (MD) force fields rely on additive parameters, including bond
     \label{fig:1}
 \end{figure}
 
-When developing parameters for new residues, charges are fit to each atom using RESP fitting \cite{{Cornell1993},{Cieplak1995}, {Bayly1993}}.  RESP fitting \cite{Bayly1993} begins with calculating the molecular electrostatic potential. The Hartree-Fock (HF) level of theory with the 6-31G* basis set is used due to opportune cancellation of error between the overestimation of the polarity of molecules and popular water models’ (TIP3P and SPC) enhanced dipole over gas-phase values. A fixed grid of points is created in the solvent accessible space around the molecule, outside the van der Waals radius of the molecule. Quantum mechanics (QM) is used to calculate the electrostatic potential at each point. Least squares fitting assigns partial charges to each atom in the molecule, with the constraint that the sum of all charges must be equal to the overall charge of the molecule. An added penalty function (the “restrained” part of RESP) eliminates the overestimation of polar atom’s calculated electrostatics by scaling down the magnitude of their charges \cite{Bayly1993}.
+When developing parameters for new residues, charges are fit to each unique atom type using RESP fitting \cite{{Cornell1993},{Cieplak1995}, {Bayly1993}}.  RESP fitting \cite{Bayly1993} begins with calculating the molecular electrostatic potential. The Hartree-Fock (HF) level of theory with the 6-31G* basis set is used due to opportune cancellation of error between the overestimation of the polarity of molecules and popular water models’ (TIP3P and SPC) enhanced dipole over gas-phase values. A fixed grid of points is created in the solvent accessible space around the molecule, outside the van der Waals radius of the molecule. Quantum mechanics (QM) is used to calculate the electrostatic potential at each point. Least squares fitting assigns partial charges to each atom in the molecule, with the constraint that the sum of all charges must be equal to the overall charge of the molecule. An added penalty function (the “restrained” part of RESP) eliminates the overestimation of polar atom’s calculated electrostatics by scaling down the magnitude of their charges \cite{Bayly1993}.
 
 Nucleic acids were originally RESP fit using a two-stage method, which involved splitting each nucleotide into two representative groups, the deoxyribonucleoside base and dimethylphosphate, representing the backbone phosphate group - only the B-form conformation was considered. In the first stage of fitting, hyperbolic restraints were applied to all heavy atoms. Additional charge constraints were applied to the “joint” regions of each of these functional groups in order to correctly assign charges for the 3’ and 5’ termini, and to enforce an integer charge for the entire system. The sugar atoms, with the exception of C1’ and H1’, were intermolecularly equivalenced, meaning that their charges were standardized in all 4 deoxyribonucleosides. The OP1 and OP2 atoms were equivalenced, as well as the hydrogen atoms of the NH2 groups. In the second stage of charge fitting, restraints were increased, freezing heavy atoms and assigning charges for hydrogens of CH3 and CH2 groups. Equivalencing of C2’H2 and C5’H2 groups establishes the same charges for all hydrogens in the group. 
 
@@ -242,7 +242,7 @@ FATAL:  Atom .R<PSU 5>.A<N1 31> does not have a type.
 FATAL:  Atom .R<PSU 5>.A<C5 32> does not have a type.
 \end{lstlisting}
 
-This means that the atom names found in the FromPrepareForLeap.pdb structure do not match the LIB file we generated with modXNA, due to have different names. For this specific example, we can safely delete the lines that contain the atoms N1 and C5 of the PSU residue from the FromPrepareForLeap.pdb file. LEaP will fill in the missing atoms following the PSU.lib library file. We can edit the FromPrepareForLeap.pdb file and delete lines for Atom 83 and 87 as shown in Listing 4. Now re-run the command: 
+This means that the atom names found in the FromPrepareForLeap.pdb structure do not match the LIB file we generated with modXNA, due to having different names. This problem arises when the names in the template do not match the names in the PDB structure. For this specific example, we can safely delete the lines that contain the atoms N1 and C5 of the PSU residue from the FromPrepareForLeap.pdb file. LEaP will fill in the missing atoms following the PSU.lib library file. We can edit the FromPrepareForLeap.pdb file and delete lines for Atom 83 and 87 as shown in Listing 4. Now re-run the command: 
 
 \begin{figure*}[hbt]
 \begin{lstlisting}[label=PSU PDB file,caption=PSU PDB file, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
@@ -502,6 +502,11 @@ In the above tutorial, we have outlined the use of modXNA.sh, a script and datab
 
 All scripts used in this tutorial as well as the modXNA script are available at:\\
 https://github.com/ManghraniA/ModXNALiveComs
+
+modXNA is available in AmberTools25.
+AmberTools can be installed through conda or by downloading the source code and compiling with CMake.
+Instructions for installing AmberTools are available at:\\
+https://ambermd.org/Installation.php
 
 \section*{Author Contributions}
 %%%%%%%%%%%%%%%%
