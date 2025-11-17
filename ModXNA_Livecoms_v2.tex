@@ -191,13 +191,13 @@ Potential problem: PSU_5_A is an unrecognized name and may not have parameters.
 
 This is because PSU is not a residue with parameters in the standard AMBER force fields. We will now use modXNA to create the parameters for the PSU residue. Even though modXNA is available in Ambertools25, it is recommended that the user download the latest version of modXNA from the repository (https://modxna.chpc.utah.edu/ or https://github.com/cbergonzo/LiveCommsModXNATutorial). As commented in the introduction, modXNA requires an input file that declares the backbone, the sugar, and the base. Looking at the catalog of available fragments on the modXNA website, we need the RNA phosphate backbone (modXNA code RPO), a ribose sugar (modXNA code RC3), and the pseudo uridine base (modXNA code PUU). The input file (in.modxna, Listing 2) is:
 
-\begin{lstlisting}[label=input file for modXNA,caption=in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+\begin{lstlisting}[label=input file for modXNA,caption=PSU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 ### modXNA input file
 RPO RC3 PUU
 \end{lstlisting}
 We run the script with:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i in.modxna -m PSU
+$ modXNA.sh -i PSU.in.modxna -m PSU
 \end{lstlisting}
 
 The -i flag indicates the input file, and the -m flag indicates the name that we want for the generated nucleotide. Without the -m flag, modXNA will generate a random 3-letter residue name. The script will generate multiple temporary files (with the prefix “tmp.”) that are useful to troubleshoot if something went wrong. If the script is completed successfully, we will have a PSU.lib file with the nucleotide, created from the selected fragments in the modXNA input script. We can check the structure of the generated nucleotide using the tmp.opt.pdb file in any molecular visualizer (Figure 4). 
@@ -327,7 +327,7 @@ DPO OME RUU
 \end{lstlisting}
 Then, run modXNA.sh with:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i in.modxna -m OMU
+$ modXNA.sh -i OMU.in.modxna -m OMU
 \end{lstlisting}
 
 Create a new directory with the name OMC. Inside the directory, create the modXNA input file (OMC.in.modxna, Listing 7):
@@ -338,7 +338,7 @@ DPO OME DCC
 \end{lstlisting}
 Run the modXNA.sh script inside the OMC directory:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i in.modxna -m OMC
+$ modXNA.sh -i OMC.in.modxna -m OMC
 \end{lstlisting}
 
 We can open the files OMU/tmp.opt.pdb and OMC/tmp.opt.pdb and confirm that both nucleotides have been created correctly (Figure 5). 
@@ -354,9 +354,9 @@ basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 ### C2′-OMe-guanine
 5PO OME DGG
 \end{lstlisting}
-Run the modXNA.sh script inside the OMC directory:
+Run the modXNA.sh script inside the 5MG directory:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i in.modxna -m 5MG --5cap
+$ modXNA.sh -i 5MGin.modxna -m 5MG --5cap
 \end{lstlisting}
 
 Notice the extra flag \verb|--5cap| to indicate to modXNA that we want a 5’-terminal residue. For the 3’-terminal residue, create a new folder with the name 3MC and create the modXNA input file (3MC.in.modxna, Listing 9):
@@ -367,7 +367,7 @@ DPO OME DCC
 \end{lstlisting}
 And run modXNA:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i in.modxna -m 3MC --3cap
+$ modXNA.sh -i 3MC.in.modxna -m 3MC --3cap
 \end{lstlisting}
 
 Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-terminal residue. The resulting 5’-terminal and 3’-terminal are shown in Figure 6. We have now all the required library files (5MG.lib, OMU.lib, OMC.lib and 3MC.lib) to build the RNA-DNA hybrid that matches the structure.
@@ -420,10 +420,10 @@ OMU & PS1 & OME & RUU & Phosphorothioate (S) backbone + O-methyl + uracil & Cent
 All the new residues follow the same procedure:
 \begin{enumerate}
     \item Make a new folder (to keep things organized) with the new residue name (i. e. 5CG)
-    \item In the new folder, make a modXNA input file with the fragment code of the backbone, sugar and base (in.modxna with the codes: 5PO CET DGG, for the residue 5CG)
+    \item In the new folder, make a modXNA input file with the fragment code of the backbone, sugar and base (5CG.in.modxna with the codes: 5PO CET DGG, for the residue 5CG)
     \item Run modXNA (remember to use the \verb|--5cap| for the 5CG residue and \verb|--3cap| flag for the 3EC residue):
     \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i in.modxna -m 5CG --5cap
+$ modXNA.sh -i 5CG.in.modxna -m 5CG --5cap
     \end{lstlisting}
     \item Check that the new residues have been built successfully by opening the tmp.opt.pdb structure.
 \end{enumerate}
