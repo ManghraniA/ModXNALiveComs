@@ -159,7 +159,7 @@ The updated procedure for parameterization, introduced in modXNA \cite{Love2024}
 
 \subsection{Using modXNA.sh, prerequisites}
 
-After choosing the three fragments, the user runs the modXNA.sh script, which is distributed as an accessory program within AmberTools25. The script utilizes Amber’s LEaP (tleap), CPPTRAJ \cite{Roe2013}  and sander programs. Header lines in each fragment mol2 file are used to set flags which strip capping groups, allowing the combination of fragments into a residue. After joint corrections are applied, and charge equivalencing occurs, the full nucleotide residue is built in tleap, and quickly minimized using sander. A final step sees the nucleotide residue loaded into tleap to create an Amber “lib” (library) file. The final output of the program, necessary to build this modified residue in tleap, is the XXX.lib file, where “XXX” is the random 3 letter name set as this specific modification’s residue name. Additional temporary outputs include topology, coordinates, and mol2 or pdb files from each step of the stitching together of the modules, which is useful to ensure the correct modification is being added to the correct location.
+ModXNA uses several programs in AmberTools, and the best way to obtain it along with the up-to-date accessory programs it uses is to download and compile AmberTools25 (or later versions) from source, or make use of the conda package for binary installation of AmberTools25 (or later versions). After choosing the three fragments, the user runs the modXNA.sh script. The script utilizes Amber’s LEaP (tleap), CPPTRAJ \cite{Roe2013}  and sander programs. Header lines in each fragment mol2 file are used to set flags which strip capping groups, allowing the combination of fragments into a residue. After joint corrections are applied, and charge equivalencing occurs, the full nucleotide residue is built in tleap, and quickly minimized using sander. A final step sees the nucleotide residue loaded into tleap to create an Amber “lib” (library) file. The final output of the program, necessary to build this modified residue in tleap, is the XXX.lib file, where “XXX” is the random 3 letter name set as this specific modification’s residue name. Additional temporary outputs include topology, coordinates, and mol2 or pdb files from each step of the stitching together of the modules, which is useful to ensure the correct modification is being added to the correct location.
 
 In addition to charge assignment based on atom types in each module, the other parameters of the nucleic acid force field must be assigned. Bonds, angles, and dihedrals are assigned based on similarity to current parameters or through the General Amber Force Field (GAFF) \cite{Wang2004}. Van der Waals radii are similarly assigned through comparison. 
 
@@ -183,7 +183,7 @@ we execute the command using:
 $ cpptraj -i prepareforleap.cpptraj
 \end{lstlisting}
 
-CPPTRAJ will open the 6IW.pdb file, delete the water molecules, strip hydrogens and generate a new PDB file (from-prepareforleap.pdb). The CPPTRAJ output will print a warning referring to the PSU residue:
+CPPTRAJ will open the 6I1W.pdb file, delete the water molecules, strip hydrogens and generate a new PDB file (from-prepareforleap.pdb). The CPPTRAJ output will print a warning referring to the PSU residue:
 
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
 Potential problem: PSU_5_A is an unrecognized name and may not have parameters.
@@ -242,7 +242,7 @@ FATAL:  Atom .R<PSU 5>.A<N1 31> does not have a type.
 FATAL:  Atom .R<PSU 5>.A<C5 32> does not have a type.
 \end{lstlisting}
 
-This means that the atom names found in the FromPrepareForLeap.pdb structure do not match the LIB file we generated with modXNA, due to having different names. This problem arises when the names in the template do not match the names in the PDB structure. For this specific example, we can safely delete the lines that contain the atoms N1 and C5 of the PSU residue from the FromPrepareForLeap.pdb file. LEaP will fill in the missing atoms following the PSU.lib library file. We can edit the FromPrepareForLeap.pdb file and delete lines for Atom 83 and 87 as shown in Listing 4. Now re-run the command: 
+This means that the atom names found in the FromPrepareForLeap.pdb structure do not match the LIB file we generated with modXNA, due to having different names. This problem arises when the names in the template do not match the names in the PDB structure. For this specific example, the PDB file identifies the carbon atom of the base that takes part in linking to the sugar as atom name "C5" while our template calls it "C1." We can safely delete the lines that contain the atoms N1 and C5 of the PSU residue from the FromPrepareForLeap.pdb file. LEaP will fill in the missing atoms following the PSU.lib library file. We can edit the FromPrepareForLeap.pdb file and delete lines for Atom 83 and 87 as shown in Listing 4. Now re-run the command: 
 
 \begin{figure*}[hbt]
 \begin{lstlisting}[label=PSU PDB file,caption=PSU PDB file, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
@@ -318,7 +318,7 @@ OMC & DPO & OME & DCC \\  \hline
 \end{NiceTabular}
 \end{table}
 
-It is important to note that modXNA does not create 5’ or 3’ terminal nucleotides, only central nucleic acid fragments that are expected to have a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
+It is important to note that 5’ and 3’ terminal nucleotides are unique from the central nucleic acid fragments that are expected to have both a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). Terminal nucleotide parameterization is only possible with modXNA version 1.8 or later. We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
 
 Create a new directory with the name OMU. Inside the directory, create the modXNA input file (OMU.in.modxna, Listing 6):
 \begin{lstlisting}[label=input file for modXNA (OMU),caption=OMU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
@@ -348,7 +348,7 @@ We can open the files OMU/tmp.opt.pdb and OMC/tmp.opt.pdb and confirm that both 
     \label{fig:5}
 \end{figure}
 
-These residues are positions OMU11, OMC12 and OMC17 of the anti-sense strand (B chain) of the original 1NAO structure. To generate the 5’-terminal OMG residue, we can use the same modXNA script with the option \verb|--5cap|. Currently, this option only works with the backbone fragment 5PO, which has a capped 5’-side, otherwise we would have missing atoms in the generated nucleotide. We are going to name the 5’-terminal residue 5MG, to not confuse with a central fragment. Create a new folder with the name 5MG, as well as the modXNA input file (5MG.in.modxna, Listing 8):
+These residues are positions OMU11, OMC12 and OMC17 of the anti-sense strand (B chain) of the original 1NAO structure. To generate the 5’-terminal OMG residue, we can use the same modXNA script with the option \verb|--5cap|. We are going to name the 5’-terminal residue 5MG, to not confuse with a central fragment. Create a new folder with the name 5MG, as well as the modXNA input file (5MG.in.modxna, Listing 8):
 \begin{lstlisting}[label=input file for modXNA (5MG),caption=5MG.in.modxna, 
 basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 ### C2′-OMe-guanine
@@ -370,7 +370,7 @@ And run modXNA:
 $ modXNA.sh -i 3MC.in.modxna -m 3MC --3cap
 \end{lstlisting}
 
-Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-terminal residue. The resulting 5’-terminal and 3’-terminal are shown in Figure 6. We have now all the required library files (5MG.lib, OMU.lib, OMC.lib and 3MC.lib) to build the RNA-DNA hybrid that matches the structure.
+Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-terminal residue. The resulting 5’-terminal and 3’-terminal are shown in Figure 6. Note that a 5'terminal requires a 3'terminal counterpart, otherwise the charge on the molecule will not be an integer. We have now all the required library files (5MG.lib, OMU.lib, OMC.lib and 3MC.lib) to build the RNA-DNA hybrid that matches the structure.
 
 \begin{figure}[h] 
     \includegraphics[width=\columnwidth]{figures/figure6.png}
@@ -489,8 +489,12 @@ quit
 
 LEaP will create a linearized structure with the correct sequence of residues. It will have some structural overlaps, however, and if we run a quick structural minimization using AMBER/sander (using the 9-step protocol from AmberMDPrep \cite{Roe2020}), we obtain a structure with no clashes, shown in Figure 9. 
 
+\section{Validation}
+
+
 \section{Conclusions}
-In the above tutorial, we have outlined the use of modXNA.sh, a script and database of pre-parameterized modules, in order to create bespoke modified nucleotides. We have shown examples of building structures pulled from the PDB, which contain modified residues (1NAO and 6I1W), as well as using the program to create a heavily modified single stranded RNA ASO. We have outlined the procedure as well as identified some common pitfalls. While we know that building new residues for MD simulations can be difficult, we hope this work streamlines the process and decreases the time-to-simulating for users.
+ccccc
+We have shown examples of building structures pulled from the PDB, which contain modified residues (1NAO and 6I1W), as well as using the program to create a heavily modified single stranded RNA ASO. We have outlined the procedure as well as identified some common pitfalls. While we know that building new residues for MD simulations can be difficult, we hope this work streamlines the process and decreases the time-to-simulating for users.
 
 \begin{figure}[h] 
     \includegraphics[width=\columnwidth]{figures/figure9.png}
@@ -507,6 +511,9 @@ modXNA is available in AmberTools25.
 AmberTools can be installed through conda or by downloading the source code and compiling with CMake.
 Instructions for installing AmberTools are available at:\\
 https://ambermd.org/Installation.php
+
+For questions, report and issue or to recommend a new fragment, please contact us at:
+modxnainfo@gmail.com
 
 \section*{Author Contributions}
 %%%%%%%%%%%%%%%%
