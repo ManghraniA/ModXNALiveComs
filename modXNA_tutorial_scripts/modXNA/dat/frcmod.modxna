@@ -530,6 +530,7 @@ CM-NO-O2	86.9      117.67      SOURCE3_SOURCE5           49    0.7530
 CM-CT-C		64.6	115.312	same as c -c3-c2
 CM-CT-C*	64.1	116.312	same as c -c3-c2
 CM-CT-C7	47      110.517 same as c2-c3-hc
+C7-OS-HO  55.0      108.50
 CM-CT-CA	65.7      112.49      SOURCE4_SOURCE5          475    1.6791
 CM-CT-H1	47	108.557	same as c2-c3-hc
 CM-CT-H2	47.2      111.69      SOURCE4_SOURCE5           49    0.9061
