@@ -4,7 +4,7 @@
 ## modXNA.sh                                        ##
 ## Script to generate modified nucleotides.         ##
 ######################################################
-VERSION='1.8'
+VERSION='1.9'
 
 # Check for required programs
 if [ -z "$CPPTRAJ" ] ; then
@@ -80,7 +80,14 @@ IS_5CAP=0
 IS_3CAP=0
 
 # Library path for the templates
-export DAT='/scratch/manghraa/modXNA_LiveCommons/modXNA'
+DAT=`dirname $0`
+DAT=$DAT
+if [ ! -d "$DAT/dat" ] ; then
+echo "Data directory $DAT/dat not found."
+exit 1
+fi
+export DAT
+#export DAT=$(pwd)
 export DATBB=$DAT'/dat/lib_backbone'
 export DATSU=$DAT'/dat/lib_sugar'
 export DATBA=$DAT'/dat/lib_base'
@@ -99,13 +106,13 @@ Help() {
   exit 1 # Exit script after printing help
 }
 
-on_exit() {
-  echo ""
-  echo "   Cleaning up...(remove tmp files, etc)"
-  if [ -f tmp.* ] ; then
-    rm tmp.*
-  fi
-}
+#on_exit() {
+#  echo ""
+#  echo "   Cleaning up...(remove tmp files, etc)"
+#  if [ -f tmp.* ] ; then
+#    rm tmp.*
+#  fi
+#}
 
 # ==============================================================================
 echo "-------------------------------------------------"
