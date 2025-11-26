@@ -135,7 +135,7 @@ Molecular dynamics (MD) force fields rely on additive parameters, including bond
     \label{fig:1}
 \end{figure}
 
-When developing parameters for new residues, charges are fit to each unique atom type using RESP fitting \cite{{Cornell1993},{Cieplak1995}, {Bayly1993}}.  RESP fitting \cite{Bayly1993} begins with calculating the molecular electrostatic potential. The Hartree-Fock (HF) level of theory with the 6-31G* basis set is used due to opportune cancellation of error between the overestimation of the polarity of molecules and popular water models’ (TIP3P and SPC) enhanced dipole over gas-phase values. A fixed grid of points is created in the solvent accessible space around the molecule, outside the van der Waals radius of the molecule. Quantum mechanics (QM) is used to calculate the electrostatic potential at each point. Least squares fitting assigns partial charges to each atom in the molecule, with the constraint that the sum of all charges must be equal to the overall charge of the molecule. An added penalty function (the “restrained” part of RESP) eliminates the overestimation of polar atom’s calculated electrostatics by scaling down the magnitude of their charges \cite{Bayly1993}.
+When developing parameters for new residues, charges are fit to each atom using RESP fitting \cite{{Cornell1993},{Cieplak1995}, {Bayly1993}}.  RESP fitting \cite{Bayly1993} begins with calculating the molecular electrostatic potential. The Hartree-Fock (HF) level of theory with the 6-31G* basis set is used due to opportune cancellation of error between the overestimation of the polarity of molecules and popular water models’ (TIP3P and SPC) enhanced dipole over gas-phase values. A fixed grid of points is created in the solvent accessible space around the molecule, outside the van der Waals radius of the molecule. Quantum mechanics (QM) is used to calculate the electrostatic potential at each point. Least squares fitting assigns partial charges to each atom in the molecule, with the constraint that the sum of all charges must be equal to the overall charge of the molecule. An added penalty function (the “restrained” part of RESP) eliminates the overestimation of polar atom’s calculated electrostatics by scaling down the magnitude of their charges \cite{Bayly1993}.
 
 Nucleic acids were originally RESP fit using a two-stage method, which involved splitting each nucleotide into two representative groups, the deoxyribonucleoside base and dimethylphosphate, representing the backbone phosphate group - only the B-form conformation was considered. In the first stage of fitting, hyperbolic restraints were applied to all heavy atoms. Additional charge constraints were applied to the “joint” regions of each of these functional groups in order to correctly assign charges for the 3’ and 5’ termini, and to enforce an integer charge for the entire system. The sugar atoms, with the exception of C1’ and H1’, were intermolecularly equivalenced, meaning that their charges were standardized in all 4 deoxyribonucleosides. The OP1 and OP2 atoms were equivalenced, as well as the hydrogen atoms of the NH2 groups. In the second stage of charge fitting, restraints were increased, freezing heavy atoms and assigning charges for hydrogens of CH3 and CH2 groups. Equivalencing of C2’H2 and C5’H2 groups establishes the same charges for all hydrogens in the group. 
 
@@ -159,9 +159,9 @@ The updated procedure for parameterization, introduced in modXNA \cite{Love2024}
 
 \subsection{Using modXNA.sh, prerequisites}
 
-ModXNA uses several programs in AmberTools, and the best way to obtain it along with the up-to-date accessory programs it uses is to download and compile AmberTools25 (or later versions) from source, or make use of the conda package for binary installation of AmberTools25 (or later versions). After choosing the three fragments, the user runs the modXNA.sh script. The script utilizes Amber’s LEaP (tleap), CPPTRAJ \cite{Roe2013}  and sander programs. Header lines in each fragment mol2 file are used to set flags which strip capping groups, allowing the combination of fragments into a residue. After joint corrections are applied, and charge equivalencing occurs, the full nucleotide residue is built in tleap, and quickly minimized using sander. A final step sees the nucleotide residue loaded into tleap to create an Amber “lib” (library) file. The final output of the program, necessary to build this modified residue in tleap, is the XXX.lib file, where “XXX” is the random 3 letter name set as this specific modification’s residue name. Additional temporary outputs include topology, coordinates, and mol2 or pdb files from each step of the stitching together of the modules, which is useful to ensure the correct modification is being added to the correct location.
+ModXNA uses several programs in AmberTools, and the best way to obtain it along with the up-to-date accessory programs it uses is to download and compile AmberTools25 (or later versions) from source, or make use of the conda package for binary installation of AmberTools25 (or later versions). After choosing the three fragments, the user runs the modXNA.sh script. The script utilizes Amber’s LEaP (tleap), CPPTRAJ \cite{Roe2013}  and sander programs. Header lines in each fragment's mol2 file are used to set flags which strip capping groups, allowing the combination of fragments into a residue. After joint corrections are applied, and charge equivalencing occurs, the full nucleotide residue is built in tleap, and minimized using sander. A final step sees the nucleotide residue loaded into tleap to create an Amber “lib” (library) file. The final output of the program, necessary to build this modified residue in tleap, is the XXX.lib file, where “XXX” is the random 3 letter name set as this specific modification’s residue name. Additional temporary outputs include topology, coordinates, and mol2 or pdb files from each step of the stitching together of the modules, which is useful to ensure the correct modification is being added to the correct location.
 
-In addition to charge assignment based on atom types in each module, the other parameters of the nucleic acid force field must be assigned. Bonds, angles, and dihedrals are assigned based on similarity to current parameters or through the General Amber Force Field (GAFF) \cite{Wang2004}. Van der Waals radii are similarly assigned through comparison. 
+In addition to charge assignment for atoms in each module, the other parameters of the nucleic acid force field must be assigned. Bonds, angles, and dihedrals are assigned based on similarity to current parameters or through the General Amber Force Field (GAFF) \cite{Wang2004}. Van der Waals radii are similarly assigned through comparison. 
 
 
 
@@ -276,7 +276,7 @@ tleap -s -f build.tleap
 The files complex.parm7 and complex.crd will be successfully generated.
 
 \subsection{Incorporating 2’-O-methylated (O-methyl) nucleotides in an RNA duplex}
-The second example will consist of a DNA-RNA hybrid where the DNA is incorporated by 2’-O-methyl ribose sugar nucleotides in the anti-sense strand. The PDB 1NAO [16] will serve as a template. As before, we download the PDB file and use a similar CPPTRAJ script to obtain a pruned ‘clean’ PDB (prepareforleap.cpptraj, Listing 5):
+In the second example we will build the PDB 1NAO [16], which consists of a DNA-RNA hybrid where the DNA contains 2’-O-methyl ribose sugar nucleotides in the anti-sense strand. As before, we download the PDB file and use a similar CPPTRAJ script to obtain a pruned ‘clean’ PDB (prepareforleap.cpptraj, Listing 5):
 
 \begin{lstlisting}[label=prepareforleap.cpptraj,caption=prepareforleap.cpptraj, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
 parm 1nao.pdb
@@ -298,7 +298,7 @@ Potential problem: OMC_12_B is an unrecognized name and may not have parameters.
 Potential problem: OMC_17_B is an unrecognized name and may not have parameters.
 Potential problem: OMC_18_B is an unrecognized name and may not have parameters.
 \end{lstlisting}
-These are the C2’-O-methyl residues that are not included in the AMBER force fields for standard nucleotides.  We will use modXNA to create the following new residues, outlined in Table 1: 5MG, OMU, OMC, 3MC.
+These are the C2’-O-methyl modified residues that are not included in the AMBER force fields for standard nucleotides.  We will use modXNA to create the following new residues, outlined in Table 1: 5MG, OMU, OMC, 3MC.
 
 \begin{table}[ht]
 \centering
@@ -318,7 +318,7 @@ OMC & DPO & OME & DCC \\  \hline
 \end{NiceTabular}
 \end{table}
 
-It is important to note that 5’ and 3’ terminal nucleotides are unique from the central nucleic acid fragments that are expected to have both a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). Terminal nucleotide parameterization is only possible with modXNA version 1.8 or later. We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
+It is important to note that 5’ and 3’ terminal nucleotides are unique from the central nucleic acid fragments that are expected to have both a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). Terminal nucleotide parameterization is only possible with modXNA version 1.8 or later, and the only termini parameterized are hydrowyl capping groups. We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
 
 Create a new directory with the name OMU. Inside the directory, create the modXNA input file (OMU.in.modxna, Listing 6):
 \begin{lstlisting}[label=input file for modXNA (OMU),caption=OMU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
@@ -348,10 +348,10 @@ We can open the files OMU/tmp.opt.pdb and OMC/tmp.opt.pdb and confirm that both 
     \label{fig:5}
 \end{figure}
 
-These residues are positions OMU11, OMC12 and OMC17 of the anti-sense strand (B chain) of the original 1NAO structure. To generate the 5’-terminal OMG residue, we can use the same modXNA script with the option \verb|--5cap|. We are going to name the 5’-terminal residue 5MG, to not confuse with a central fragment. Create a new folder with the name 5MG, as well as the modXNA input file (5MG.in.modxna, Listing 8):
+These residues are positions OMU11, OMC12 and OMC17 of the anti-sense strand (B chain) of the original 1NAO structure. To generate the 5’-terminal OMG residue, we can use the  modXNA script with the option \verb|--5cap|. We are also going to use the 5PO backbone module to specify the 5' cap. We are going to name the 5’-terminal residue 5MG, to not confuse with a central fragment. Create a new folder with the name 5MG, as well as the modXNA input file (5MG.in.modxna, Listing 8):
 \begin{lstlisting}[label=input file for modXNA (5MG),caption=5MG.in.modxna, 
 basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
-### C2′-OMe-guanine
+### 5' C2′-OMe-guanine
 5PO OME DGG
 \end{lstlisting}
 Run the modXNA.sh script inside the 5MG directory:
@@ -359,7 +359,7 @@ Run the modXNA.sh script inside the 5MG directory:
 $ modXNA.sh -i 5MGin.modxna -m 5MG --5cap
 \end{lstlisting}
 
-Notice the extra flag \verb|--5cap| to indicate to modXNA that we want a 5’-terminal residue. For the 3’-terminal residue, create a new folder with the name 3MC and create the modXNA input file (3MC.in.modxna, Listing 9):
+Notice the extra flag \verb|--5cap| and the 5PO backbone module are both specified to indicate to modXNA that we want a 5’-terminal residue. A 5' residue must have a companion 3' residue for the charge on the entire system to be an integer. For the 3’-terminal residue, create a new folder with the name 3MC and create the modXNA input file (3MC.in.modxna, Listing 9):
 \begin{lstlisting}[label=input file for modXNA (3MC),caption=3MC.in.modxna, 
 basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 ### C2′-OMe-cytosine
@@ -370,10 +370,49 @@ And run modXNA:
 $ modXNA.sh -i 3MC.in.modxna -m 3MC --3cap
 \end{lstlisting}
 
-Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-terminal residue. The resulting 5’-terminal and 3’-terminal are shown in Figure 6. Note that a 5'terminal requires a 3'terminal counterpart, otherwise the charge on the molecule will not be an integer. We have now all the required library files (5MG.lib, OMU.lib, OMC.lib and 3MC.lib) to build the RNA-DNA hybrid that matches the structure.
+Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-terminal residue. The resulting 5’-terminal and 3’-terminal are shown in Figure 6. Note that a 5'terminal requires a 3'terminal counterpart, otherwise the charge on the molecule will not be an integer. We now have all the required library files (5MG.lib, OMU.lib, OMC.lib and 3MC.lib) to build the RNA-DNA hybrid that matches the structure.
+
+To build the RNA-DNA hybrid 1NAO, we will first combine the different lib files into a single file. To do this, create the text file create-1nao-lib.tleap:
+\begin{lstlisting}[label=input file for combining libraries,caption=create-1nao-lib.tleap, 
+basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+loadoff 3MC/3MC.lib
+saveoff 3MC 1NAO.lib
+loadoff 5MG/5MG.lib
+saveoff 5MG 1NAO.lib
+loadoff OMC/OMC.lib
+saveoff OMC 1NAO.lib
+loadoff OMU/OMU.lib
+saveoff OMU 1NAO.lib
+quit
+\end{lstlisting}
+Run the file with:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ tleap -s -f create-1nao-lib.tleap
+\end{lstlisting}
+
+The second thing we must do is edit the FromPrepForLeap.pdb file to denote 5' and 3' terminal residues. Copy FromPrepForLeap.pdb to edit_termini.FromPrepForLeap.pdb and change the following residue names: OMG 10 to 5MG, OMC 18 to 3MC. 
+
+Once these two steps are completed, we can create input for tleap and build the parmtop and crd files, as shown below.
+\begin{lstlisting}[label=input file for tleap,caption=Build1nao.tleap, 
+basicstyle=\small, breaklines=true,breakindent=0pt, backgroundcolor=\color{light-gray}]
+###########################
+source leaprc.DNA.OL15
+source leaprc.RNA.OL3
+source leaprc.gaff2
+source leaprc.water.opc
+###########################
+loadoff 1NAO.lib
+loadamberparams /home/user/modXNA/dat/frcmod.modxna
+###########################
+x = loadpdb edit_termini.FromPrepForLeap.pdb
+solvateoct x OPCBOX 9.0
+addionsrand x Na+ 0
+saveamberparm x 1nao.parm7 1nao.rst7
+quit
+\end{lstlisting}
 
 \begin{figure}[h] 
-    \includegraphics[width=\columnwidth]{figures/figure6.png}
+    \includegraphics[width=\columnwidth]{figures/figure6-new.png}
     \caption{Left: 5’ terminal 5MG residue. Right: 3’ terminal 3MC residue. Both are the tmp.opt.pdb files created by modXNA.}
     \label{fig:5}
 \end{figure}
