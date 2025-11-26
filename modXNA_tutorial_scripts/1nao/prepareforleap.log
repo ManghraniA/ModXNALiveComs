@@ -1,0 +1,106 @@
+
+CPPTRAJ: Trajectory Analysis. V6.29.16 (GitHub)
+    ___  ___  ___  ___
+     | \/ | \/ | \/ | 
+    _|_/\_|_/\_|_/\_|_
+
+| Date/time: 11/26/25 09:31:50
+| Available memory: 5.035 GB
+
+INPUT: Reading input from 'prepareforleap.cpptraj'
+  [parm 1nao.pdb]
+	Reading '1nao.pdb' as PDB File
+	Reading bond info from CONECT records.
+	Not reading bond info from LINK records.
+	Determining bond info from distances.
+Warning: Determining bond length parameters from element types for '1nao.pdb'.
+  [loadcrd 1nao.pdb name edit]
+	Reading '1nao.pdb' as PDB
+Warning: PDB cell lengths are all 1.0 Ang.; this usually indicates an invalid box.
+	Read CRYST1 info from PDB: a=1 b=1 c=1 alpha=90 beta=90 gamma=90
+Warning: Box information in PDB appears invalid; disabling box.
+	Loading trajectory '1nao.pdb' as 'edit'
+----- 1nao.pdb (1-1, 1) -----
+Warning: PDB cell lengths are all 1.0 Ang.; this usually indicates an invalid box.
+Warning: Disabling box information.
+  [prepareforleap crdset edit name FromPrepForLeap out FromPrepForLeapt-tleap.in leapunitname x pdbout FromPrepForLeap.pdb nowat noh]
+	PREPAREFORLEAP:
+# Citation: Roe, D.R.; Bergonzo, C.; "PrepareForLeap: An Automated Tool for
+#           Fast PDB-to-Parameter Generation."
+#           J. Comp. Chem. (2022), V. 43, I. 13, pp 930-935.
+	Using frame 1 from COORDS set edit
+	Prepared system will be saved to COORDS set 'FromPrepForLeap'
+	PDB will be written to FromPrepForLeap.pdb
+	Using original TER cards where possible.
+	Writing leap input to 'FromPrepForLeapt-tleap.in'
+	Using leap unit name: x
+	Solvent residue name: HOH
+	Will attempt to prepare sugars.
+Info: Parameter file path from CPPTRAJHOME variable: '/nisthome/bergonzoc/Programs/cpptraj/dat/PDB_ResidueNames.txt'
+	Reading PDB residue names from '/nisthome/bergonzoc/Programs/cpptraj/dat/PDB_ResidueNames.txt'
+	38 PDB residue names recognized by Amber FFs.
+Info: Parameter file path from CPPTRAJHOME variable: '/nisthome/bergonzoc/Programs/cpptraj/dat/Carbohydrate_PDB_Glycam_Names.txt'
+	Reading PDB residue name -> Glycam name map from '/nisthome/bergonzoc/Programs/cpptraj/dat/Carbohydrate_PDB_Glycam_Names.txt'
+	95 entries in PDB to glycam name map.
+	Will determine sugar anomer type/configuration by geometry.
+	Initial residue-residue cutoff for determining linkages: 8 Ang.
+	Offset added to bond cutoffs for determining linkages: 0.2 Ang.
+	Removing solvent. Solvent mask= ':HOH'
+	Removing hydrogens.
+	Mask [:HOH] corresponds to 0 atoms.
+	Histidine protonation detection:
+		ND1 atom name                   : ND1
+		NE2 atom name                   : NE2
+		Histidine original residue name : HIS
+		Epsilon-protonated residue name : HIE
+		Delta-protonated residue name   : HID
+		Doubly-protonated residue name  : HIP
+	Attempting to determine histidine form from any existing H atoms.
+	Mask [:HIS] corresponds to 0 atoms.
+	No histidine names were changed.
+	Will split off recognized sugar functional groups into separate residues.
+	Will search for missing bonds to sugar anomeric atoms.
+	Looking for sugars selected by ':0MK,32O,3MK,4GL,64K,A2G,A5C,ADA,AFD,AHR,ALL,ARA,ARB,ASG,AXR,BDF,BDP,BDR,BGC,BM3,BM7,BMA,BXX,BXY,FCA,FCB,FRU,FUB,FUC,FUL,G6D,GAL,GCU,GCV,GIV,GL0,GLA,GLC,GTR,GU4,GUP,GXL,GYE,GZL,HSY,HSZ,IDR,IDS,LDY,LFR,LXC,MAN,MGL,MXY,MXZ,NAG,NDG,NG6,NGA,NGZ,PSV,RAM,RIB,RIP,RM4,SDY,SEJ,SF6,SF9,SHD,SIA,SLB,SOE,T6T,TTV,UEA,VDS,VDV,WOO,XXR,XYP,XYS,XYZ,YYJ,YYK,YYM,YYQ,Z2D,Z4W,Z6H,Z6J,Z8H,Z8T,Z9N,ZEE'
+	Selected 0 sugar atoms.
+Warning: No sugar atoms selected by :0MK,32O,3MK,4GL,64K,A2G,A5C,ADA,AFD,AHR,ALL,ARA,ARB,ASG,AXR,BDF,BDP,BDR,BGC,BM3,BM7,BMA,BXX,BXY,FCA,FCB,FRU,FUB,FUC,FUL,G6D,GAL,GCU,GCV,GIV,GL0,GLA,GLC,GTR,GU4,GUP,GXL,GYE,GZL,HSY,HSZ,IDR,IDS,LDY,LFR,LXC,MAN,MGL,MXY,MXZ,NAG,NDG,NG6,NGA,NGZ,PSV,RAM,RIB,RIP,RM4,SDY,SEJ,SF6,SF9,SHD,SIA,SLB,SOE,T6T,TTV,UEA,VDS,VDV,WOO,XXR,XYP,XYS,XYZ,YYJ,YYK,YYM,YYQ,Z2D,Z4W,Z6H,Z6J,Z8H,Z8T,Z9N,ZEE
+	LEaP input containing 'loadpdb' and bond commands for disulfides,
+	  sugars, etc will be written to 'FromPrepForLeapt-tleap.in'
+	Cysteine residues involved in disulfide bonds will be changed to: CYX
+	Searching for disulfide bonds with a cutoff of 2.5 Ang.
+	Mask [:CYS@SG] corresponds to 0 atoms.
+Warning: No cysteine sulfur atoms selected by :CYS@SG
+	0 sugar atoms selected in 0 residues.
+Warning: No sugar atoms selected by :0MK,32O,3MK,4GL,64K,A2G,A5C,ADA,AFD,AHR,ALL,ARA,ARB,ASG,AXR,BDF,BDP,BDR,BGC,BM3,BM7,BMA,BXX,BXY,FCA,FCB,FRU,FUB,FUC,FUL,G6D,GAL,GCU,GCV,GIV,GL0,GLA,GLC,GTR,GU4,GUP,GXL,GYE,GZL,HSY,HSZ,IDR,IDS,LDY,LFR,LXC,MAN,MGL,MXY,MXZ,NAG,NDG,NG6,NGA,NGZ,PSV,RAM,RIB,RIP,RM4,SDY,SEJ,SF6,SF9,SHD,SIA,SLB,SOE,T6T,TTV,UEA,VDS,VDV,WOO,XXR,XYP,XYS,XYZ,YYJ,YYK,YYM,YYQ,Z2D,Z4W,Z6H,Z6J,Z8H,Z8T,Z9N,ZEE
+	Potential problem : OMG_10_B is an unrecognized name and may not have parameters.
+	Potential problem : OMU_11_B is an unrecognized name and may not have parameters.
+	Potential problem : OMC_12_B is an unrecognized name and may not have parameters.
+	Potential problem : OMC_17_B is an unrecognized name and may not have parameters.
+	Potential problem : OMC_18_B is an unrecognized name and may not have parameters.
+	Writing 'FromPrepForLeap.pdb' as PDB
+  'FromPrepForLeap.pdb' (1 frames) is a PDB file, Parm 1nao.pdb: Writing 1 frames (1-Last, 1)
+  [go]
+---------- RUN BEGIN -------------------------------------------------
+Warning: No input trajectories specified.
+TIME: Analyses took 0.0000 seconds.
+
+DATASETS (2 total):
+	edit "edit" (coordinates), size is 1 (4.636 kB)
+	FromPrepForLeap "FromPrepForLeap" (coordinates), size is 1 (4.636 kB)
+    Total data set memory usage is at least 9.272 kB
+
+RUN TIMING:
+TIME:		Init               : 0.0000 s (  0.00%)
+TIME:		Trajectory Process : 0.0000 s (  0.00%)
+TIME:		Action Post        : 0.0000 s (  0.00%)
+TIME:		Analysis           : 0.0000 s (  1.96%)
+TIME:		Data File Write    : 0.0000 s ( 52.94%)
+TIME:		Other              : 0.0000 s (  0.45%)
+TIME:	Run Total 0.0001 s
+---------- RUN END ---------------------------------------------------
+TIME: Total execution time: 0.1226 seconds.
+--------------------------------------------------------------------------------
+To cite CPPTRAJ use:
+Daniel R. Roe and Thomas E. Cheatham, III, "PTRAJ and CPPTRAJ: Software for
+  Processing and Analysis of Molecular Dynamics Trajectory Data". J. Chem.
+  Theory Comput., 2013, 9 (7), pp 3084-3095.
+

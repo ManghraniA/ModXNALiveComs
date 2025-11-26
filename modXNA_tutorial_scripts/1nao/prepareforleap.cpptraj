@@ -1,8 +1,4 @@
-##Preprocessing for Tleap
 parm 1nao.pdb
 loadcrd 1nao.pdb name edit
-prepareforleap crdset edit name FromPrepForLeap \
-      out FromPrepForLeap-tleap.in leapunitname x \
-      pdbout FromPrepForLeap.pdb nowat noh
+prepareforleap crdset edit name FromPrepForLeap out FromPrepForLeapt-tleap.in leapunitname x pdbout FromPrepForLeap.pdb nowat noh
 go
-

@@ -1,0 +1,8 @@
+loadoff 3MC/3MC.lib
+saveoff 3MC 1NAO.lib
+loadoff 5MG/5MG.lib
+saveoff 5MG 1NAO.lib
+loadoff OMC/OMC.lib
+saveoff OMC 1NAO.lib
+loadoff OMU/OMU.lib
+saveoff OMU 1NAO.lib
