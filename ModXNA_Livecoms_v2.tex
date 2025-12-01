@@ -189,7 +189,7 @@ CPPTRAJ will open the 6I1W.pdb file, delete the water molecules, strip hydrogens
 Potential problem: PSU_5_A is an unrecognized name and may not have parameters.
 \end{lstlisting}
 
-This is because PSU is not a residue with parameters in the standard AMBER force fields. We will now use modXNA to create the parameters for the PSU residue. Even though modXNA is available in Ambertools25, it is recommended that the user download the latest version of modXNA from the repository (https://modxna.chpc.utah.edu/ or https://github.com/cbergonzo/LiveCommsModXNATutorial). As commented in the introduction, modXNA requires an input file that declares the backbone, the sugar, and the base. Looking at the catalog of available fragments on the modXNA website, we need the RNA phosphate backbone (modXNA code RPO), a ribose sugar (modXNA code RC3), and the pseudo uridine base (modXNA code PUU). The input file (in.modxna, Listing 2) is:
+This is because PSU is not a residue with parameters in the standard AMBER force fields. We will now use modXNA to create the parameters for the PSU residue. Even though modXNA is available in Ambertools25, it is recommended that the user download the latest version of modXNA from the repository (https://modxna.chpc.utah.edu/ or https://github.com/cbergonzo/LiveCommsModXNATutorial). As commented in the introduction, modXNA requires an input file that declares the backbone, the sugar, and the base. Looking at the catalog of available fragments on the modXNA website, we need the RNA phosphate backbone (modXNA code RPO), a ribose sugar (modXNA code RC3), and the pseudo uridine base (modXNA code PUU). The input file (PSU.in.modxna, Listing 2) is:
 
 \begin{lstlisting}[label=input file for modXNA,caption=PSU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 ### modXNA input file
@@ -242,7 +242,7 @@ FATAL:  Atom .R<PSU 5>.A<N1 31> does not have a type.
 FATAL:  Atom .R<PSU 5>.A<C5 32> does not have a type.
 \end{lstlisting}
 
-This means that the atom names found in the FromPrepareForLeap.pdb structure do not match the LIB file we generated with modXNA, due to having different names. This problem arises when the names in the template do not match the names in the PDB structure. For this specific example, the PDB file identifies the carbon atom of the base that takes part in linking to the sugar as atom name "C5" while our template calls it "C1." We can safely delete the lines that contain the atoms N1 and C5 of the PSU residue from the FromPrepareForLeap.pdb file. LEaP will fill in the missing atoms following the PSU.lib library file. We can edit the FromPrepareForLeap.pdb file and delete lines for Atom 83 and 87 as shown in Listing 4. Now re-run the command: 
+This means that the atom names found in the FromPrepareForLeap.pdb structure do not match the LIB file we generated with modXNA. This problem arises when the names in the template do not match the names in the PDB structure. For this specific example, the PDB file identifies the carbon atom of the base that takes part in linking to the sugar as atom name "C5" while our template calls it "C1." We can safely delete the lines that contain the atoms N1 and C5 of the PSU residue from the FromPrepareForLeap.pdb file. LEaP will fill in the missing atoms following the PSU.lib library file. We can edit the FromPrepareForLeap.pdb file and delete lines for Atom 83 and 87 as shown in Listing 4. Now re-run the command: 
 
 \begin{figure*}[hbt]
 \begin{lstlisting}[label=PSU PDB file,caption=PSU PDB file, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
@@ -318,7 +318,7 @@ OMC & DPO & OME & DCC \\  \hline
 \end{NiceTabular}
 \end{table}
 
-It is important to note that 5’ and 3’ terminal nucleotides are unique from the central nucleic acid fragments that are expected to have both a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). Terminal nucleotide parameterization is only possible with modXNA version 1.8 or later, and the only termini parameterized are hydrowyl capping groups. We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
+It is important to note that 5’ and 3’ terminal nucleotides are unique from the central nucleic acid fragments that are expected to have both a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). Terminal nucleotide parameterization is only possible with modXNA version 1.8 or later, and the only termini parameterized are hydroxyl capping groups. We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
 
 Create a new directory with the name OMU. Inside the directory, create the modXNA input file (OMU.in.modxna, Listing 6):
 \begin{lstlisting}[label=input file for modXNA (OMU),caption=OMU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
@@ -443,13 +443,13 @@ ASOs are typically heavily modified and contain a hybrid DNA-RNA-DNA strand. In 
 \makecell{Base \\fragment \\code} & 
 \makecell{Details of\\fragments } & 
 \makecell{Notes} \\ 
-5CG & 5PO & CET & DGG & Phosphate backbone + cET + guanine & 5'-terminal \\ 
-CEG & DPO & CET & DGG & Phosphate backbone + cET + guanine & Central residue\\ 
-MEC & DPO & CET & M5C & Phosphate backbone + cET + 5 methyl cytosine & Central residue\\ 
-MOG & DPO & MOE & RGG & Phosphate backbone + MOE + guanine & Central residue\\ 
-MOA & DPO & MOE & RAA & Phosphate backbone + MOE + adenine & Central residue\\ 
+5CG & 5PO & CET & RGG & Phosphate backbone + cET + guanine & 5'-terminal \\ 
+CEG & RPO & CET & RGG & Phosphate backbone + cET + guanine & Central residue\\ 
+MEC & RPO & CET & M5C & Phosphate backbone + cET + 5 methyl cytosine & Central residue\\ 
+MOG & RPO & MOE & RGG & Phosphate backbone + MOE + guanine & Central residue\\ 
+MOA & RPO & MOE & RAA & Phosphate backbone + MOE + adenine & Central residue\\ 
 POG & PS1 & MOE & RGG & Phosphorothioate (S) backbone + MOE + guanine & Central residue\\ 
-POA & DPO & MOE & RAA & Phosphorothioate (S) backbone + MOE + adenine& Central residue\\ 
+POA & RPO & MOE & RAA & Phosphorothioate (S) backbone + MOE + adenine& Central residue\\ 
 MSC & PS1 & CET & M5C & Phosphorothioate (S) backbone + cET + 5 methyl cytosine & Central residue\\ 
 OMU & PS1 & OME & RUU & Phosphorothioate (S) backbone + O-methyl + uracil & Central residue\\
 3EC & PS1 & CET & M5C & Phosphorothioate (S) backbone + cET + 5 methyl cytosine & 3'-terminal\\ 
