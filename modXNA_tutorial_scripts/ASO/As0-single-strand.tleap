@@ -1,0 +1,16 @@
+source leaprc.RNA.OL3
+source leaprc.gaff2
+source leaprc.water.opc
+loadoff /home/manghraa/MD_tutorial/ff-DNA-OL24/ff-nucleic-OL24.lib
+loadamberparams /home/manghraa/MD_tutorial/ff-DNA-OL24/ff-nucleic-OL24.frcmod
+
+######################################
+loadoff ASO.lib
+loadamberparams ../modXNA/dat/frcmod.modxna
+######################################
+ASO = sequence{5CG CEG MEC MOG MOA MOG POG POA MSC OMU 3EC}
+solvateoct ASO OPCBOX 9.0
+addionsrand ASO Na+ 0
+addionsrand ASO Cl- 0
+saveamberparm ASO ASO-single-strand.parm7 ASO-single-strand.crd
+quit
