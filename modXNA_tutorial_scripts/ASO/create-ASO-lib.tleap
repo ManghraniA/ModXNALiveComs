@@ -1,22 +1,21 @@
-####Combine all mod .lib files
-Loadoff 3EC/3EC.lib
-Saveoff 3EC ASO.lib
-Loadoff 5CG/5CG.lib
-Saveoff 5CG ASO.lib
-Loadoff CEG/CEG.lib
-Saveoff CEG ASO.lib
-Loadoff MEC/MEC.lib
-Saveoff MEC ASO.lib
-Loadoff MOA/MOA.lib
-Saveoff MOA ASO.lib
-Loadoff MOG/MOG.lib
-Saveoff MOG ASO.lib
-Loadoff MSC/MSC.lib
-Saveoff MSC ASO.lib
-Loadoff OMU/OMU.lib
-Saveoff OMU ASO.lib
-Loadoff POA/POA.lib
-Saveoff POA ASO.lib
-Loadoff POG/POG.lib
-Saveoff POG ASO.lib
+loadoff 3EC/3EC.lib
+saveoff 3EC ASO.lib
+loadoff 5CG/5CG.lib
+saveoff 5CG ASO.lib
+loadoff CEG/CEG.lib
+saveoff CEG ASO.lib
+loadoff MEC/MEC.lib
+saveoff MEC ASO.lib
+loadoff MOA/MOA.lib
+saveoff MOA ASO.lib
+loadoff MOG/MOG.lib
+saveoff MOG ASO.lib
+loadoff MSC/MSC.lib
+saveoff MSC ASO.lib
+loadoff OMU/OMU.lib
+saveoff OMU ASO.lib
+loadoff POA/POA.lib
+saveoff POA ASO.lib
+loadoff POG/POG.lib
+saveoff POG ASO.lib
 quit

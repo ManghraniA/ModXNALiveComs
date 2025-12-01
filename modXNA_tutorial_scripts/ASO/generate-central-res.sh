@@ -7,29 +7,29 @@ modxna="/home/bergonzoc/GitHub/modXNA.dan/modxna.sh"
 declare -A ResNames
 
 ResNames["5CG"]="5PO CET DGG"
-ResNames["CEG"]="DPO CET DGG"
-ResNames["MEC"]="DPO CET M5C"
-ResNames["MOG"]="DPO MOE RGG"
-ResNames["MOA"]="DPO MOE RAA"
+ResNames["CEG"]="RPO CET RGG"
+ResNames["MEC"]="RPO CET M5C"
+ResNames["MOG"]="RPO MOE RGG"
+ResNames["MOA"]="RPO MOE RAA"
 ResNames["POG"]="PS1 MOE RGG"
-ResNames["POA"]="DPO MOE RAA"
+ResNames["POA"]="RPO MOE RAA"
 ResNames["MSC"]="PS1 CET M5C"
 ResNames["OMU"]="PS1 OME RUU"
 ResNames["3EC"]="PS1 CET M5C"
 
 
-#for res in CEG MEC MOG MOA POG POA MSC OMU ; do
+for res in CEG MEC MOG MOA POG POA MSC OMU ; do
 
-#mkdir $res/
-#cd $res/
+mkdir $res/
+cd $res/
 
-#echo "${ResNames[$res]}" > $res.modxna.in
+echo "${ResNames[$res]}" > $res.modxna.in
 
-#$modxna -i $res.modxna.in -m $res
+$modxna -i $res.modxna.in -m $res
 
-#cd $WORKDIR
+cd $WORKDIR
 
-#done
+done
 
 #5' 5CG cap
 for res5pr in 5CG ; do
