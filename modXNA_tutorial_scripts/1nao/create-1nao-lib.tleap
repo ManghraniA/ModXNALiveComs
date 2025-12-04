@@ -6,3 +6,4 @@ loadoff OMC/OMC.lib
 saveoff OMC 1NAO.lib
 loadoff OMU/OMU.lib
 saveoff OMU 1NAO.lib
+quit

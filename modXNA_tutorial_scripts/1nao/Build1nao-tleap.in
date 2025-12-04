@@ -1,11 +1,10 @@
 ###########################
 source leaprc.DNA.OL15
 source leaprc.RNA.OL3
-source leaprc.gaff2
 source leaprc.water.opc
 ###########################
 loadoff 1NAO.lib
-loadamberparams /home/bergonzoc/GitHub/modXNA.dan/dat/frcmod.modxna
+loadamberparams ../dat/frcmod.modxna
 ###########################
 x = loadpdb edit_termini.FromPrepForLeap.pdb
 
