@@ -1,15 +1,14 @@
 #############################
 source leaprc.DNA.OL15
 source leaprc.RNA.OL3
-source leaprc.gaff2
 source leaprc.water.opc
 ######################################
 ## Load the LIB file created with modXNA
 loadoff PSU.lib
 ## Load the force mod file included in modXNA
-loadamberparams /home/user/modXNA/dat/frcmod.modxna
+loadamberparams ../dat/frcmod.modxna
 ######################################
-x = loadpdb FromPrepForLeap.pdb
+x = loadpdb from-prepareforleap.pdb
 solvateoct x OPCBOX 9.0
 addionsrand x Na+ 0
 addionsrand x Cl- 0

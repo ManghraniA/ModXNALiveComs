@@ -1,8 +1,8 @@
 ##Preprocessing for Tleap
-parm 6I1W.pdb
-loadcrd 6I1W.pdb name edit
-prepareforleap crdset edit name 6i1w.pdb FromPrepForLeap \
-      out  FromPrepForLeap−tleap.in leapunitname x \
-      pdbout  FromPrepForLeap.pdb nowat noh
+parm 6i1w.pdb
+loadcrd 6i1w.pdb name edited
+prepareforleap crdset edited name 6i1w.pdb from-prepareforleap \
+      out from-prepareforleap-tleap.in leapunitname x \
+      pdbout from-prepareforleap.pdb nowat noh
 go
 

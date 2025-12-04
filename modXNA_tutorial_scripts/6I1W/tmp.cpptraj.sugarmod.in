@@ -1,0 +1,7 @@
+parm tmp.sugar.mol2
+loadcrd tmp.sugar.mol2 name sugarfragment
+## Joint correction terms ###
+change crdset sugarfragment charge by -0.4000 of @C1'
+change crdset sugarfragment charge by  0.2000 of @H1'
+crdout sugarfragment tmp2.sugar.mol2
+run

@@ -1,0 +1,15 @@
+###########################################
+source leaprc.protein.ff19SB
+source leaprc.DNA.OL15
+source leaprc.gaff
+###########################################
+addpath ../dat
+loadamberparams frcmod.modxna
+###########################################
+PSU = loadmol2 tmp.opt.mol2
+set PSU restype nucleic
+set PSU name PSU
+set PSU head PSU.1.P
+set PSU tail PSU.1.O3'
+saveoff PSU PSU.lib
+quit
