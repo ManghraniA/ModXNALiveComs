@@ -2,7 +2,7 @@
 
 WORKDIR=`pwd`
 
-modxna="/home/bergonzoc/GitHub/modXNA.dan/modxna.sh"
+modxna="../../modxna.sh"
 
 declare -A ResNames
 

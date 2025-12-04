@@ -1,4 +1,4 @@
-log started: Mon Dec  1 09:46:36 2025
+log started: Thu Dec  4 14:51:42 2025
 
 Log file: ./leap.log
 >> #
@@ -235,7 +235,7 @@ OL15 force field for DNA (99bsc0-betaOL1-eps-zetaOL1-chiOL4) see http://ffol.upo
 ----- Source: /nisthome/bergonzoc/Programs/amber/amber20/dat/leap/cmd/leaprc.RNA.OL3
 ----- Source of /nisthome/bergonzoc/Programs/amber/amber20/dat/leap/cmd/leaprc.RNA.OL3 done
 >> logFile leap.log
-log started: Mon Dec  1 09:46:36 2025
+log started: Thu Dec  4 14:51:42 2025
 
 Log file: ./leap.log
 >> # ----- NOTE: this is designed for PDB format 3!
@@ -424,128 +424,6 @@ Substituting map OB -> OP2  for  OB -> OP2
 Substituting map O1P -> OP1  for  O1P -> OP1
 Substituting map O2P -> OP2  for  O2P -> OP2
 >> 
-> 
-> source leaprc.gaff2
------ Source: /nisthome/bergonzoc/Programs/amber/amber20/dat/leap/cmd/leaprc.gaff2
------ Source of /nisthome/bergonzoc/Programs/amber/amber20/dat/leap/cmd/leaprc.gaff2 done
->> logFile leap.log
-log started: Mon Dec  1 09:46:36 2025
-
-Log file: ./leap.log
->> #
->> # ----- leaprc for loading the general Amber Force field.
->> #       This file is mostly for use with Antechamber
->> #
->> #	load atom type hybridizations
->> #
->> addAtomTypes {
->> 	{ "h1"  "H" "sp3" }
->> 	{ "h2"  "H" "sp3" }
->> 	{ "h3"  "H" "sp3" }
->> 	{ "h4"  "H" "sp3" }
->> 	{ "h5"  "H" "sp3" }
->> 	{ "ha"  "H" "sp3" }
->> 	{ "hc"  "H" "sp3" }
->> 	{ "hn"  "H" "sp3" }
->> 	{ "ho"  "H" "sp3" }
->> 	{ "hp"  "H" "sp3" }
->> 	{ "hs"  "H" "sp3" }
->> 	{ "hw"  "H" "sp3" }
->> 	{ "hx"  "H" "sp3" }
->> 	{ "o"  "O" "sp2" }
->> 	{ "o2"  "O" "sp2" }
->> 	{ "oh"  "O" "sp3" }
->> 	{ "op"  "O" "sp3" }
->> 	{ "oq"  "O" "sp3" }
->> 	{ "os"  "O" "sp3" }
->> 	{ "ow"  "O" "sp3" }
->> 	{ "c"  "C" "sp2" }
->> 	{ "c1"  "C" "sp2" }
->> 	{ "c2"  "C" "sp2" }
->> 	{ "c3"  "C" "sp3" }
->> 	{ "ca"  "C" "sp2" }
->> 	{ "cc"  "C" "sp2" }
->> 	{ "cd"  "C" "sp2" }
->> 	{ "ce"  "C" "sp2" }
->> 	{ "cf"  "C" "sp2" }
->> 	{ "cg"  "C" "sp2" }
->> 	{ "ch"  "C" "sp2" }
->> 	{ "cp"  "C" "sp2" }
->> 	{ "cs"  "C" "sp2" }
->> 	{ "cq"  "C" "sp2" }
->> 	{ "cu"  "C" "sp2" }
->> 	{ "cv"  "C" "sp2" }
->> 	{ "cx"  "C" "sp2" }
->> 	{ "cy"  "C" "sp2" }
->> 	{ "cz"  "C" "sp2" }
->> 	{ "n"   "N" "sp2" }
->> 	{ "n1"  "N" "sp2" }
->> 	{ "n2"  "N" "sp2" }
->> 	{ "n3"  "N" "sp3" }
->> 	{ "n4"  "N" "sp3" }
->> 	{ "n5"  "N" "sp3" }
->> 	{ "n6"  "N" "sp3" }
->> 	{ "n7"  "N" "sp3" }
->> 	{ "n8"  "N" "sp3" }
->> 	{ "n9"  "N" "sp3" }
->> 	{ "na"  "N" "sp2" }
->> 	{ "nb"  "N" "sp2" }
->> 	{ "nc"  "N" "sp2" }
->> 	{ "nd"  "N" "sp2" }
->> 	{ "ne"  "N" "sp2" }
->> 	{ "nf"  "N" "sp2" }
->> 	{ "nh"  "N" "sp2" }
->> 	{ "ni"  "N" "sp2" }
->> 	{ "nj"  "N" "sp2" }
->> 	{ "nk"  "N" "sp3" }
->> 	{ "nl"  "N" "sp3" }
->> 	{ "nm"  "N" "sp2" }
->> 	{ "nn"  "N" "sp2" }
->> 	{ "no"  "N" "sp2" }
->> 	{ "np"  "N" "sp3" }
->> 	{ "nq"  "N" "sp3" }
->> 	{ "ns"  "N" "sp2" }
->> 	{ "nt"  "N" "sp2" }
->> 	{ "nu"  "N" "sp2" }
->> 	{ "nv"  "N" "sp2" }
->> 	{ "nx"  "N" "sp3" }
->> 	{ "ny"  "N" "sp3" }
->> 	{ "nz"  "N" "sp3" }
->> 	{ "n+"  "N" "sp3" }
->> 	{ "s"   "S" "sp2" }
->> 	{ "s2"   "S" "sp2" }
->> 	{ "s3"   "S" "sp3" }
->> 	{ "s4"   "S" "sp3" }
->> 	{ "s6"   "S" "sp3" }
->> 	{ "sh"   "S" "sp3" }
->> 	{ "sp"   "S" "sp3" }
->> 	{ "sq"   "S" "sp3" }
->> 	{ "ss"   "S" "sp3" }
->> 	{ "sx"   "S" "sp3" }
->> 	{ "sy"   "S" "sp3" }
->> 	{ "p2"   "P" "sp2" }
->> 	{ "p3"   "P" "sp3" }
->> 	{ "p4"   "P" "sp3" }
->> 	{ "p5"   "P" "sp3" }
->> 	{ "pb"   "P" "sp3" }
->> 	{ "pc"   "P" "sp3" }
->> 	{ "pd"   "P" "sp3" }
->> 	{ "pe"   "P" "sp3" }
->> 	{ "pf"   "P" "sp3" }
->> 	{ "px"   "P" "sp3" }
->> 	{ "py"   "P" "sp3" }
->> 	{ "f"   "F" "sp3" }
->> 	{ "cl"  "Cl" "sp3" }
->> 	{ "br"  "Br" "sp3" }
->> 	{ "i"   "I"  "sp3" }
->> }
->> #
->> #	Load the general force field parameter set.
->> #
->> gaff = loadamberparams gaff2.dat
-Loading parameters: /nisthome/bergonzoc/Programs/amber/amber20/dat/leap/parm/gaff2.dat
-Reading title:
-AMBER General Force Field for organic molecules (Version 2.11, May 2016)
 > 
 > source leaprc.water.opc
 ----- Source: /nisthome/bergonzoc/Programs/amber/amber20/dat/leap/cmd/leaprc.water.opc
@@ -749,14 +627,19 @@ Loading: MSC
 Loading: OMU
 Loading: POA
 Loading: POG
-> loadamberparams /home/bergonzoc/GitHub/modXNA.dan/dat/frcmod.modxna
-Loading parameters: /home/bergonzoc/GitHub/modXNA.dan/dat/frcmod.modxna
+> loadamberparams ../dat/frcmod.modxna
+Loading parameters: ../dat/frcmod.modxna
 Reading force field modification type file (frcmod)
 Reading title:
-modXNA frcmod - v20250901
+20241120 - modXNA extended version based on parameters for the 107 modified nucleosides in RNA: see ../cmd/leaprc.modrna08
 (UNKNOWN ATOM TYPE: DH)
+(UNKNOWN ATOM TYPE: N1)
+(UNKNOWN ATOM TYPE: NO)
 (UNKNOWN ATOM TYPE: OF)
+(UNKNOWN ATOM TYPE: S6)
+(UNKNOWN ATOM TYPE: S2)
 (UNKNOWN ATOM TYPE: SO)
+(UNKNOWN ATOM TYPE: SS)
 > ###########################
 > ASO=sequence{5CG CEG MEC MOG MOA MOG POG POA MSC OMU 3EC}
 Sequence: Cpptraj
@@ -771,28 +654,28 @@ Sequence: Cpptraj
 Sequence: Cpptraj
 Sequence: Cpptraj
 > solvateoct ASO OPCBOX 9.0
-Scaling up box by a factor of 1.051717 to meet diagonal cut criterion
-  Solute vdw bounding box:              15.908 19.648 47.854
-  Total bounding box for atom centers:  66.785 66.785 66.785
-      (box expansion for 'iso' is 231.8%)
+Scaling up box by a factor of 1.060160 to meet diagonal cut criterion
+  Solute vdw bounding box:              16.004 48.052 19.082
+  Total bounding box for atom centers:  67.135 67.135 67.135
+      (box expansion for 'iso' is 236.6%)
   Solvent unit box:                     18.865 18.478 19.006
 The number of boxes:  x= 4  y= 4  z= 4
-  Volume: 155726.432 A^3 (oct)
-  Total mass 82714.950 amu,  Density 0.882 g/cc
-  Added 4365 residues.
+  Volume: 158151.962 A^3 (oct)
+  Total mass 84138.214 amu,  Density 0.883 g/cc
+  Added 4444 residues.
 > addionsrand ASO Na+ 0
 10 Na+ ions required to neutralize.
-Adding 10 counter ions to "ASO". 4355 solvent molecules will remain.
-0: Placed Na+ in ASO at (-8.02, 12.97, -20.77).
-0: Placed Na+ in ASO at (-12.92, -12.21, -12.54).
-0: Placed Na+ in ASO at (8.37, -23.91, -10.02).
-0: Placed Na+ in ASO at (3.53, -8.57, 28.19).
-0: Placed Na+ in ASO at (9.35, 30.14, -0.06).
-0: Placed Na+ in ASO at (-7.67, 3.68, -17.47).
-0: Placed Na+ in ASO at (-8.23, 16.38, -27.74).
-0: Placed Na+ in ASO at (-23.92, -4.27, 8.29).
-0: Placed Na+ in ASO at (-6.59, -3.51, 28.87).
-0: Placed Na+ in ASO at (5.68, -4.19, -7.41).
+Adding 10 counter ions to "ASO". 4434 solvent molecules will remain.
+0: Placed Na+ in ASO at (22.32, -15.70, -16.17).
+0: Placed Na+ in ASO at (5.01, 12.97, 11.97).
+0: Placed Na+ in ASO at (15.59, -17.79, 12.25).
+0: Placed Na+ in ASO at (-2.72, -30.18, 12.14).
+0: Placed Na+ in ASO at (-7.54, -22.84, 16.96).
+0: Placed Na+ in ASO at (9.31, -16.06, 26.24).
+0: Placed Na+ in ASO at (-11.28, -16.63, 17.02).
+0: Placed Na+ in ASO at (8.12, 14.55, 7.32).
+0: Placed Na+ in ASO at (-5.70, -10.23, -18.59).
+0: Placed Na+ in ASO at (12.76, -11.57, 18.03).
 > saveamberparm ASO ASO-ss.parm7 ASO-ss.rst7
 Checking Unit.
 
