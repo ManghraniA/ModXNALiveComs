@@ -75,7 +75,7 @@
 \author[5]{Pablo D. Dans}
 \author[4]{Thomas E. Cheatham III}
 \author[2*]{Christina Bergonzo}
-\affil[1]{1Department of Medicinal Chemistry, Ionis Pharmaceuticals, 2855 Gazelle Court, Carlsbad, California 92010, United States}
+\affil[1]{Department of Medicinal Chemistry, Ionis Pharmaceuticals, 2855 Gazelle Court, Carlsbad, California 92010, United States}
 \affil[2]{Institute for Bioscience and Biotechnology Research, National Institute of Standards and Technology and the University of Maryland, 9600 Gudelsky Way, Rockville, MD, 20850, United States}
 \affil[3]{Laboratory of Computational Biology, National Heart Lung and Blood Institute, National Institutes of Health, Bethesda, MD 20892, United States}
 \affil[4]{Department of Medicinal Chemistry, College of Pharmacy, University of Utah, 2000 East 30 South Skaggs 306, Salt Lake City, Utah 84112, United States}
@@ -174,7 +174,7 @@ In addition to charge assignment for atoms in each module, the other parameters 
 \section{Building modified oligonucleotides with modXNA}
 
 \subsection{Incorporating pseudo uridine in an RNA duplex}
-A simple initial example is running MD simulations of an RNA duplex that contains a pseudo-uridine (PSU) modification. We will base this example on the Nuclear Magnetic Resonance (NMR) determined structure deposited with PDB ID 6I1W \cite{Deb2019} that contains the PSU residue at position 5 of the sense strand. After downloading the legacy PDB Format file (6I1W.pdb) some cleaning is required to have a working PDB file that we can then use for building parameter and input coordinate files for MD simulations. There are multiple ways to do this; in this case, we will use the prepareforleap command available in CPPTRAJ \cite{Roe2022}. Briefly, this command removes information that the PDB file includes that is either not needed by or would cause issues with LEaP, removes water molecules, and performs a brief check of the residues to report problems that LEaP might encounter. In a text file (prepareforleap.cpptraj), add the commands (Listing 1):
+A simple initial example is running MD simulations of an RNA duplex that contains a pseudo-uridine (PSU) modification. We will base this example on the Nuclear Magnetic Resonance (NMR) determined structure deposited with PDB ID 6I1W \cite{Deb2019} that contains the PSU residue at position 5 of the sense strand. After downloading the legacy PDB Format file (6I1W.pdb) some cleaning is required to have a working PDB file that we can then use for building parameter and input coordinate files for MD simulations. There are multiple ways to do this. In this case, we will use the prepareforleap command available in CPPTRAJ \cite{Roe2022}. Briefly, this command removes information that the PDB file includes that is either not needed by or would cause issues with LEaP, removes water molecules, and performs a brief check of the residues to report problems that LEaP might encounter. In a text file (prepareforleap.cpptraj), add the commands (Listing 1):
 
 \begin{lstlisting}[label=prepareforleap.cpptraj,caption=prepareforleap.cpptraj, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
 parm 6I1W.pdb
@@ -195,7 +195,7 @@ CPPTRAJ will open the 6I1W.pdb file, delete the water molecules, strip hydrogens
 Potential problem: PSU_5_A is an unrecognized name and may not have parameters.
 \end{lstlisting}
 
-This is because PSU is not a residue with parameters in the standard AMBER force fields. We will now use modXNA to create the parameters for the PSU residue. Even though modXNA is available in Ambertools25, it is recommended that the user download the latest version of modXNA from the website (https://modxna.chpc.utah.edu/ or this article's github repository (https://github.com/ManghraniA/ModXNALiveComms). As commented in the introduction, modXNA requires an input file that declares the backbone, the sugar, and the base. Looking at the catalog of available fragments on the modXNA website, we need the RNA phosphate backbone (modXNA code RPO), a ribose sugar (modXNA code RC3), and the pseudo uridine base (modXNA code PUU). The input file (PSU.in.modxna, Listing 2) is:
+This is because PSU is not a residue with parameters in the standard AMBER force fields. We will now use modXNA to create the parameters for the PSU residue. Even though modXNA is available in AmberTools25, it is recommended that the user download the latest version of modXNA from the website (https://modxna.chpc.utah.edu/ or this article's github repository (https://github.com/ManghraniA/ModXNALiveComms). As commented in the introduction, modXNA requires an input file that declares the backbone, the sugar, and the base. Looking at the catalog of available fragments on the modXNA website, we need the RNA phosphate backbone (modXNA code RPO), a ribose sugar (modXNA code RC3), and the pseudo uridine base (modXNA code PUU). The input file (PSU.in.modxna, Listing 2) is:
 
 \begin{lstlisting}[label=input file for modXNA,caption=PSU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 ### modXNA input file
@@ -237,10 +237,10 @@ quit
 \end{lstlisting}
 We can run the above script with the following command:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ $ tleap -s -f build.tleap
+$ tleap -s -f build.tleap
 \end{lstlisting}
 
-LEaP will load the declared AMBER force fields, load the LIB file and the frcmod files, then load the PDB structure generated from the prepareforleap command. The files complex.parm7 and complex.crd will be successfully generated. Note that atom names for residues built by modXNA may not match your particular PDB file. In this case, it it usually acceptable to keep commonly named atoms, delete atoms with naming differences, and have LEaP build in the remainder of the nucleotide based on the coordinates and connectivity in the lib file. 
+LEaP will load the declared AMBER force fields, load the LIB file and the frcmod files, then load the PDB structure generated from the prepareforleap command. The files complex.parm7 and complex.crd will be successfully generated. Note that atom names for residues built by modXNA may not match your particular PDB file. In this case, it is usually acceptable to keep commonly named atoms, delete atoms with naming differences, and have LEaP build in the remainder of the nucleotide based on the coordinates and connectivity in the lib file. 
 
 \subsection{Incorporating 2’-O-methylated (O-methyl) nucleotides in an RNA duplex}
 In the second example we will build the PDB 1NAO [16], which consists of a DNA-RNA hybrid where the DNA contains 2’-O-methyl ribose sugar nucleotides in the anti-sense strand. As before, we download the PDB file and use a similar CPPTRAJ script to obtain a pruned ‘clean’ PDB (prepareforleap.cpptraj, Listing 5):
@@ -323,7 +323,7 @@ basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 \end{lstlisting}
 Run the modXNA.sh script inside the 5MG directory:
 \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
-$ modXNA.sh -i 5MGin.modxna -m 5MG --5cap
+$ modXNA.sh -i 5MG.in.modxna -m 5MG --5cap
 \end{lstlisting}
 
 Notice the extra flag \verb|--5cap| and the 5PO backbone module are both specified to indicate to modXNA that we want a 5’-terminal residue. A 5' residue must have a companion 3' residue for the charge on the entire system to be an integer. For the 3’-terminal residue, create a new folder with the name 3MC and create the modXNA input file (3MC.in.modxna, Listing 9):
@@ -345,7 +345,7 @@ Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-te
     \label{fig:7}
 \end{figure}
 
-To build the RNA-DNA hybrid 1NAO, we will first combine the different lib files into a single file. To do this, create the text file create-1nao-lib.tleap:
+To build the RNA-DNA hybrid 1NAO, we will first combine the different lib files into a single file. To do this, create the following text file (create-1nao-lib.tleap, Listing 9):
 \begin{lstlisting}[label=input file for combining libraries,caption=create-1nao-lib.tleap, 
 basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
 loadoff 3MC/3MC.lib
@@ -365,7 +365,7 @@ $ tleap -s -f create-1nao-lib.tleap
 
 The second thing we must do is edit the FromPrepForLeap.pdb file to denote 5' and 3' terminal residues. Copy FromPrepForLeap.pdb to edit_termini.FromPrepForLeap.pdb and change the following residue names: OMG 10 to 5MG, OMC 18 to 3MC. 
 
-Once these two steps are completed, we can create input for tleap and build the parmtop and crd files, as shown below.
+Once these two steps are completed, we can create input for tleap and build the parmtop and crd files, as shown below (Build1nao.tleap, Listing 10).
 \begin{lstlisting}[label=input file for tleap,caption=Build1nao.tleap, 
 basicstyle=\small, breaklines=true,breakindent=0pt, backgroundcolor=\color{light-gray}]
 ###########################
