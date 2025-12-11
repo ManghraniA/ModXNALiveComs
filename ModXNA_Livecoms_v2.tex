@@ -248,7 +248,7 @@ $ tleap -s -f build.tleap
 LEaP will load the declared AMBER force fields, load the LIB file and the frcmod files, then load the PDB structure generated from the prepareforleap command. The files complex.parm7 and complex.crd will be successfully generated. Note that atom names for residues built by modXNA may not match your particular PDB file. In this case, it is usually acceptable to keep commonly named atoms, delete atoms with naming differences, and have LEaP build in the remainder of the nucleotide based on the coordinates and connectivity in the lib file. 
 
 \subsection{Incorporating 2’-O-methylated (O-methyl) nucleotides in an RNA duplex}
-In the second example we will build the PDB 1NAO [16], which consists of a DNA-RNA hybrid where the DNA contains 2’-O-methyl ribose sugar nucleotides in the anti-sense strand. As before, we download the PDB file and use a similar CPPTRAJ script to obtain a pruned ‘clean’ PDB (prepareforleap.cpptraj, Listing 4):
+In the second example we will build the PDB 1NAO \cite{Nishizaki1997}, which consists of a DNA-RNA hybrid where the DNA contains 2’-O-methyl ribose sugar nucleotides in the anti-sense strand. As before, we download the PDB file and use a similar CPPTRAJ script to obtain a pruned ‘clean’ PDB (prepareforleap.cpptraj, Listing 4):
 
 \begin{lstlisting}[label=prepareforleap.cpptraj,caption=prepareforleap.cpptraj, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
 parm 1nao.pdb
