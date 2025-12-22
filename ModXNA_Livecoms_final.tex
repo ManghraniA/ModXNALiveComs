@@ -1,0 +1,573 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% LIVECOMS ARTICLE TEMPLATE FOR BEST PRACTICES GUIDE
+%%% ADAPTED FROM ELIFE ARTICLE TEMPLATE (8/10/2017)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PREAMBLE
+
+\documentclass[9pt,tutorial]{livecoms}
+% Use the 'onehalfspacing' option for 1.5 line spacing
+% Use the 'doublespacing' option for 2.0 line spacing
+% Use the 'lineno' option for adding line numbers.
+% Use the 'pubversion' option for adding the citation and publication information to the document footer, when the DOI is assigned and the article is added to a live issue.
+% The 'bestpractices' option for indicates that this is a best practices guide.
+% Omit the bestpractices option to remove the marking as a LiveCoMS paper.
+% Please note that these options may affect formatting.
+
+%%% For 2-column figures
+\usepackage{caption}
+\usepackage{dblfloatfix}
+
+%%###packages for nice tables
+\usepackage{makecell}
+\usepackage{nicematrix} 
+
+%%###packages (general)
+\usepackage{lipsum} % Required to insert dummy text
+\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
+\DeclareSIUnit\Molar{M}
+\usepackage[italic]{mathastext}
+\graphicspath{{figures/}}
+
+%% Requirements for rendering codeblocks
+\usepackage{color}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{8.5cm}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+%% Requirements for rendering codeblocks
+\definecolor{light-gray}{gray}{0.95}
+\lstdefinestyle{MyBash}{%
+    basicstyle=\ttfamily,
+    backgroundcolor = \color{light-gray},
+    commentstyle={},
+    showstringspaces=false,
+    breakatwhitespace=true,
+    breaklines=true,
+    language=bash
+}
+
+%%%Requirements for prime character in lstlistings
+\usepackage{xcolor}
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    backgroundcolor=\color{lightgray},
+    literate={′}{\textquotesingle}1  % or use {$^\prime$}1
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% IMPORTANT USER CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\versionnumber}{1.0}  % you should update the minor version number in preprints and major version number of submissions.
+% Do not add a newline in the next command, no matter how long the repository name is, as it will break the link in the PDF.
+\newcommand{\githubrepository}{\url{https://github.com/ManghraniA/ModXNALiveComs}}  %this should be the main github repository for this article
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE SETUP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Parameterizing modified nucleic acids for molecular simulations in the AMBER MD software environment [Article v\versionnumber]}
+
+\author[1]{Rodrigo Galindo-Murillo}
+\author[2]{Akanksha Manghrani}
+\author[3]{Daniel Roe}
+\author[4]{Olivia Love}
+\author[5]{Pablo D. Dans}
+\author[4]{Thomas E. Cheatham III}
+\author[2*]{Christina Bergonzo}
+\affil[1]{Department of Medicinal Chemistry, Ionis Pharmaceuticals, 2855 Gazelle Court, Carlsbad, California 92010, United States}
+\affil[2]{Institute for Bioscience and Biotechnology Research, National Institute of Standards and Technology and the University of Maryland, 9600 Gudelsky Way, Rockville, MD, 20850, United States}
+\affil[3]{Laboratory of Computational Biology, National Heart Lung and Blood Institute, National Institutes of Health, Bethesda, MD 20892, United States}
+\affil[4]{Department of Medicinal Chemistry, College of Pharmacy, University of Utah, 2000 East 30 South Skaggs 306, Salt Lake City, Utah 84112, United States}
+\affil[5]{Computational Biophysics Group, Department of Biological Sciences, CENUR Litoral Norte, Universidad de la República, 50000 Salto, Uruguay. Bioinformatics Unit. Institute Pasteur of Montevideo, Uruguay}
+
+
+\corr{christina.bergonzo@nist.gov}{CB}  
+
+
+\orcid{Rodrigo Galindo-Murillo}{orcid.org/0000-0001-5847-4143}
+\orcid{Akanksha Manghrani}{orcid.org/0000-0002-6498-7305}
+\orcid{Daniel R. Roe}{orcid.org/0000-0002-5834-2447}
+\orcid{Olivia Love}{orcid.org/0000-0002-7743-8495}
+\orcid{Pablo D. Dans}{orcid.org/0000-0002-5927-372X}
+\orcid{Thomas E. Cheatham III}{orcid.org/0000-0003-0298-3904}
+\orcid{Christina Bergonzo}{orcid.org/0000-0003-1990-2912}
+
+
+\blurb{This LiveCoMS document is maintained online on GitHub at \githubrepository; to provide feedback, suggestions, or help improve it, please visit the GitHub repository and participate via the issue tracker.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% PUBLICATION INFORMATION
+%%% Fill out these parameters when available
+%%% These are used when the "pubversion" option is invoked
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pubDOI{10.XXXX/YYYYYYY}
+\pubvolume{<volume>}
+\pubissue{<issue>}
+\pubyear{<year>}
+\articlenum{<number>}
+\datereceived{Day Month Year}
+\dateaccepted{Day Month Year}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% ARTICLE START
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+\maketitle
+
+\begin{abstract}
+Parameterizing modified nucleic acids is a difficult but necessary task for expanding the simulated space of oligonucleotides, including both naturally occurring structures and those with pharmaceutical relevance. In lieu of expensive and difficult chemical synthesis in the laboratory, computer simulations are often performed to make predictions for sequence and structure effects, as well as downstream critical quality attributes. To enable these simulations, modifications have to be parameterized to faithfully represent their effect on nucleotides. This is a non-trivial process, complicated by the fact that it may be the first thing researchers must figure out before they can build their structures and start their initial simulations. To enable these research projects, we created modXNA, a code that assembles pre-parameterized modules of the base, backbone, and sugar, to create bespoke combinations of modifications. In the following tutorial, we provide background on force field parameterization in the Amber software ecosystem and detail the steps necessary to perform parameterization of modified nucleic acids using modXNA.
+\end{abstract}
+
+\end{frontmatter}
+
+
+\section{Introduction}
+
+Molecular dynamics (MD) force fields rely on additive parameters, including bonded and non-bonded terms, to describe a system using physics-based potentials. What follows is a brief overview of Amber force field parameterization, to establish a baseline understanding and provide context for the modXNA \cite{Love2024} parameterization process. The original Amber force field for proteins and nucleic acids addressed parameterization of torsion and angle parameters, deriving these from experimental data \cite{Weiner1986}. This force field was a precursor to the current equation used to describe the potential energy, introduced in Cornell et al. 1995 \cite{Cornell1993} (Figure 1). The Cornell et al. Amber ff94 reparametrized the electrostatics using the restrained electrostatic potential (RESP) fitting protocol \cite{{Cornell1993},{Cieplak1995}, {Bayly1993}}. Subsequent force field modifications undertook refitting nucleic acid sugar pucker and chi torsional parameters \cite{Cheatham1999}. The most recent nucleic acid parameters for RNA combine the refitting of alpha and gamma torsion dihedrals from parmbsc0 \cite{Perez2007} with new chi parameters from the OL3 corrections \cite{Zgarbova2011}, and new chi, epsilon, and zeta torsions in bsc1 \cite{Ivani2015} for DNA, as well as revisions to beta, alpha, and gamma torsions in the OL15 \cite{Ivani2015} and OL21 \cite{Zgarbova2021} DNA force fields, respectively. In addition to bonded terms, there are non-bonded terms which depend on representative point charges associated with each atom as well as the combination of their atom type specific van der Waals radii. In order to incorporate modifications into the nucleic acid MD, we will have to create parameters for the force field. The following review contains a comprehensive overview of parameters for modified nucleotides and their parameterization methodology \cite{Rodrigo2025}.
+
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure1.png}
+    \caption{AMBER force field equation for molecular dynamics simulations. Bold, blue font denotes variables in the equation that must be parameterized by the user.}
+    \label{fig:1}
+\end{figure}
+
+When developing parameters for new residues, charges are fit to each atom using RESP fitting \cite{{Cornell1993},{Cieplak1995}, {Bayly1993}}.  RESP fitting \cite{Bayly1993} begins with calculating the molecular electrostatic potential. The Hartree-Fock (HF) level of theory with the 6-31G* basis set is used due to opportune cancellation of error between the overestimation of the polarity of molecules and popular water models’ (TIP3P and SPC) enhanced dipole over gas-phase values. A fixed grid of points is created in the solvent accessible space around the molecule, outside the van der Waals radius of the molecule. Quantum mechanics (QM) is used to calculate the electrostatic potential at each point. Least squares fitting assigns partial charges to each atom in the molecule, with the constraint that the sum of all charges must be equal to the overall charge of the molecule. An added penalty function (the “restrained” part of RESP) eliminates the overestimation of polar atom’s calculated electrostatics by scaling down the magnitude of their charges \cite{Bayly1993}.
+
+Nucleic acids were originally RESP fit using a two-stage method, which involved splitting each nucleotide into two representative groups, the deoxyribonucleoside base and dimethylphosphate, representing the backbone phosphate group - only the B-form conformation was considered. In the first stage of fitting, hyperbolic restraints were applied to all heavy atoms. Additional charge constraints were applied to the “joint” regions of each of these functional groups in order to correctly assign charges for the 3’ and 5’ termini, and to enforce an integer charge for the entire system. The sugar atoms, with the exception of C1’ and H1’, were intermolecularly equivalenced, meaning that their charges were standardized in all 4 deoxyribonucleosides. The OP1 and OP2 atoms were equivalenced, as well as the hydrogen atoms of the NH2 groups. In the second stage of charge fitting, restraints were increased, freezing heavy atoms and assigning charges for hydrogens of CH3 and CH2 groups. Equivalencing of C2’H2 and C5’H2 groups establishes the same charges for all hydrogens in the group. 
+
+\section{Scope Of the tutorial}
+
+Parameterization of modifications, including the designation of new atom types with their corresponding hybridization, must be developed for use in MD simulations. Based on the current form of the force field (Figure 1), we need to develop parameters for bonds, angles, dihedrals, and non-bonded interactions, including van der Waals and electrostatics.
+
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure2.png}
+    \caption{A schematic of the workflow used in modXNA.}
+    \label{fig:2}
+\end{figure}
+
+The updated procedure for parameterization, introduced in modXNA \cite{Love2024}, preserves some of the early parameterization methods – specifically, we wanted to make sure that in the absence of a modification, the underlying nucleotide parameters are identical to the current force field, that intermolecular equivalences were preserved, and that joint regions were treated fairly (Figure 2). The split from two components (a base containing a deoxyribose and a phosphate group) to three components (base, sugar, and backbone) was undertaken in order to modify the smallest possible unit (Figure 3). Three modules are chosen by the user: one backbone, one sugar, and one base. The Catalog hosted online (at https://modxna.chpc.utah.edu) and on the GitHub repository for this publication outlines the fragments that have already been parameterized. The three-letter “Fragment IDs” for each fragment are designated in the input file in order: [backbone] [sugar] [base]. 
+
+In the following tutorial, we outline a few common applications where modified nucleotides are required: first, incorporating a pseudouridine base in an RNA duplex; second, incorporating 2'-O-methylated nucleotides in an RNA duplex, including modifying the 5' and 3' termini; and third, building a heavily modified antisense oligonucleotide. The first two examples focus on building a parameter/topology file and coordinate file pair from a deposited PDB file with modifications, and the third example builds a parameter/topology file and coordinate file pair for a ssRNA from sequence. In each case, the user will produce a parameter/topology file and coordinate file to use to run molecular dynamics in AmberMD. Information about using the force fields in other software packages can be found at the following link: https://ambermd.org/AmberModels.php.
+
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure3.png}
+    \caption{Modules which make up the final nucleotide. All three parts are required for modXNA. The red groups denote “capping groups” that were present during QM calculations to act as placeholders for the other modules that make up a complete nucleotide. These capping groups are removed when modXNA assembles the residue.}
+    \label{fig:3}
+\end{figure}
+
+\subsection{Using modXNA.sh, prerequisites}
+
+ModXNA uses several programs in AmberTools, and the best way to obtain the up-to-date accessory programs it uses is to download and compile AmberTools25 (or later versions) from source, or make use of the conda package for binary installation of AmberTools25 (or later versions). ModXNA can be downloaded from modxna.chpc.utah.edu. After choosing the three fragments that make up the backbone, sugar and base, the user runs the modXNA.sh script. The script utilizes Amber’s LEaP (tleap), CPPTRAJ \cite{Roe2013}  and sander programs. Header lines in each fragment's mol2 file are used to set flags which strip capping groups, allowing the combination of fragments into a residue. After joint corrections are applied, and charge equivalencing occurs, the full nucleotide residue is built in tleap, and minimized using sander. A final step sees the nucleotide residue loaded into tleap to create an Amber “lib” (library) file. The final output of the program, necessary to build this modified residue in tleap, is the XXX.lib file, where “XXX” is the random 3 letter name set as this specific modification’s residue name. Additional temporary outputs include topology, coordinates, and mol2 or pdb files from each step of the stitching together of the modules, which is useful to ensure the correct modification is being added to the correct location. More information about Amber file formats can be found at the following link: https://ambermd.org/FileFormats.php
+
+In addition to charge assignment for atoms in each module, the other parameters of the nucleic acid force field must be assigned. Bonds, angles, and dihedrals are assigned based on similarity to current parameters or through the General Amber Force Field (GAFF) \cite{Wang2004}. Van der Waals radii are similarly assigned through comparison. A flowchart describing a general procedure for using modXNA is shown in Figure 4. 
+
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ModXNA general pipeline copy.png}
+    \caption{ModXNA overall pipeline flowchart. Part 1 - Users will need to define their residue by comparison to the modXNA catalog. Part 2 - Users will need to build their modified nucleotides with modXNA.sh. Part 3 - To be done concurrently with Part 2, users should visually inspect the modified nucleotide. Part 4- Use the library files built in Part 2 along with frcmod.modxna to build a system parameter and coordinate file pair using LEaP. }
+    \label{fig:4}
+\end{figure*}
+
+\section{Building modified oligonucleotides with modXNA}
+
+\subsection{Incorporating pseudo uridine in an RNA duplex}
+A simple initial example is running MD simulations of an RNA duplex that contains a pseudo-uridine (PSU) modification. We will base this example on the Nuclear Magnetic Resonance (NMR) determined structure deposited with PDB ID 6I1W \cite{Deb2019} that contains the PSU residue at position 5 of the sense strand. After downloading the legacy PDB Format file (6I1W.pdb) some cleaning is required to have a working PDB file that we can then use for building parameter and input coordinate files for MD simulations. There are multiple ways to do this. In this case, we will use the prepareforleap command available in CPPTRAJ \cite{Roe2022}. Briefly, this command removes information that the PDB file includes that is either not needed by or would cause issues with LEaP, removes water molecules, and performs a brief check of the residues to report problems that LEaP might encounter. In a text file (prepareforleap.cpptraj), add the commands (Listing 1):
+
+\begin{lstlisting}[label=prepareforleap.cpptraj,caption=prepareforleap.cpptraj, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
+parm 6I1W.pdb
+loadcrd 6I1W.pdb name edit
+prepareforleap crdset edit name FromPrepForLeap \
+      out FromPrepForLeap-tleap.in leapunitname x  \
+      pdbout FromPrepForLeap.pdb nowat noh
+go
+\end{lstlisting}
+we execute the command using:
+\begin{lstlisting}[style=MyBash]
+$ cpptraj -i prepareforleap.cpptraj
+\end{lstlisting}
+
+CPPTRAJ will open the 6I1W.pdb file, delete the water molecules, strip hydrogens and generate a new PDB file (from-prepareforleap.pdb). The CPPTRAJ output will print a warning referring to the PSU residue:
+
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+Potential problem: PSU_5_A is an unrecognized name and may not have parameters.
+\end{lstlisting}
+
+This is because PSU is not a residue with parameters in the standard AMBER force fields. We will now use modXNA to create the parameters for the PSU residue. Even though modXNA is available in AmberTools25, it is recommended that the user download the latest version of modXNA from the website (https://modxna.chpc.utah.edu/ or this article's github repository (https://github.com/ManghraniA/ModXNALiveComms). As commented in the introduction, modXNA requires an input file that declares the backbone, the sugar, and the base. Looking at the catalog of available fragments on the modXNA website, we need the RNA phosphate backbone (modXNA code RPO), a ribose sugar (modXNA code RC3), and the pseudo uridine base (modXNA code PUU). The input file (PSU.in.modxna, Listing 2) is:
+
+\begin{lstlisting}[label=input file for modXNA,caption=PSU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+### modXNA input file
+RPO RC3 PUU
+\end{lstlisting}
+We run the script with:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ modXNA.sh -i PSU.in.modxna -m PSU
+\end{lstlisting}
+
+The -i flag indicates the input file, and the -m flag indicates the name that we want for the generated nucleotide. Without the -m flag, modXNA will generate a random 3-letter residue name. The script will generate multiple temporary files (with the prefix “tmp.”) that are useful to troubleshoot if something went wrong. If the script is completed successfully, we will have a PSU.lib file with the nucleotide, created from the selected fragments in the modXNA input script. We can check the structure of the generated nucleotide using the tmp.opt.pdb file in any molecular visualizer (Figure 5). 
+
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure4.png}
+    \caption{Visualization of the tmp.opt.pdb structure for new residue name PSU.}
+    \label{fig:5}
+\end{figure}
+
+We can now build our Amber topology and coordinates files using LEaP. We use the following tleap script (build.tleap, Listing 3):
+
+\begin{lstlisting}[label=input file for tleap,caption=build.tleap, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+###########################
+source leaprc.DNA.OL15
+source leaprc.RNA.OL3
+source leaprc.water.opc
+##########################
+## Load the LIB file created with modXNA
+loadoff PSU.lib
+## Load the force mod file included in modXNA
+loadamberparams /home/user/modXNA/dat/frcmod.modxna
+######################################
+x = loadpdb FromPrepForLeap.pdb
+solvateoct x OPCBOX 9.0
+addionsrand x Na+ 0
+addionsrand x Cl- 0
+saveamberparm x complex.parm7 complex.crd
+charge x
+quit
+\end{lstlisting}
+We can run the above script with the following command:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ tleap -s -f build.tleap
+\end{lstlisting}
+
+LEaP will load the declared AMBER force fields, load the LIB file and the frcmod files, then load the PDB structure generated from the prepareforleap command. The files complex.parm7 and complex.crd will be successfully generated. Note that atom names for residues built by modXNA may not match your particular PDB file. In this case, it is usually acceptable to keep commonly named atoms, delete atoms with naming differences, and have LEaP build in the remainder of the nucleotide based on the coordinates and connectivity in the lib file. 
+
+\subsection{Incorporating 2’-O-methylated (O-methyl) nucleotides in an RNA duplex}
+In the second example we will build the PDB 1NAO \cite{Nishizaki1997}, which consists of a DNA-RNA hybrid where the DNA contains 2’-O-methyl ribose sugar nucleotides in the anti-sense strand. As before, we download the PDB file and use a similar CPPTRAJ script to obtain a pruned ‘clean’ PDB (prepareforleap.cpptraj, Listing 4):
+
+\begin{lstlisting}[label=prepareforleap.cpptraj,caption=prepareforleap.cpptraj, basicstyle=\small, breaklines=true, breakindent=0pt, backgroundcolor=\color{light-gray}]
+parm 1nao.pdb
+loadcrd 1nao.pdb name edit
+prepareforleap crdset edit name FromPrepForLeap \
+      out FromPrepForLeap-tleap.in leapunitname x  \
+      pdbout FromPrepForLeap.pdb nowat noh
+go
+\end{lstlisting}
+Run the script with:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ cpptraj -i prepareforleap.cpptraj
+\end{lstlisting}
+and we get several warnings:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+Potential problem: OMG_10_B is an unrecognized name and may not have parameters.
+Potential problem: OMU_11_B is an unrecognized name and may not have parameters.
+Potential problem: OMC_12_B is an unrecognized name and may not have parameters.
+Potential problem: OMC_17_B is an unrecognized name and may not have parameters.
+Potential problem: OMC_18_B is an unrecognized name and may not have parameters.
+\end{lstlisting}
+These are the C2’-O-methyl modified residues that are not included in the AMBER force fields for standard nucleotides.  We will use modXNA to create the following new residues, outlined in Table 1: 5MG, OMU, OMC, 3MC.
+
+\begin{table}[ht]
+\centering
+\caption{Description of input file modules for building four modified residues in PDBID 1NAO.}
+\label{tab:nicematrix_final}
+\begin{NiceTabular}{|p{1.25cm}|p{1.4cm}|p{1.2cm}|p{1.2cm}|p{1.6cm}|}
+\hline
+\makecell{Residue \\name} & 
+\makecell{Backbone \\fragment\\ code} & 
+\makecell{Sugar \\fragment \\code} & 
+\makecell{Base \\fragment \\code} & 
+\makecell{Notes} \\ \hline
+5MG & 5PO & OME & DGG & 5'-terminal \\ \hline
+OMU & DPO & OME & RUU \\ \hline
+OMC & DPO & OME & DCC \\  \hline
+3MC & DPO & OME & DCC & 3'-terminal \\ \hline
+\end{NiceTabular}
+\end{table}
+
+It is important to note that 5’ and 3’ terminal nucleotides are unique from the central nucleic acid fragments that are expected to have both a 5’ and 3’ bond. For this system, we require a 5’-terminal modified residue (guanine with C2’-O-methyl sugar) and a 3’-terminal modified residue (cytosine with C2’-O-methyl sugar). Terminal nucleotide parameterization is only possible with modXNA version 1.8 or later, and the only termini parameterized are hydroxyl capping groups. We will first focus on the central residues: a C2’-O-methyl uridine and a C2’-O-methyl cytosine are required to match the sequence from the experimental structure. 
+
+Create a new directory with the name OMU. Inside the directory, create the modXNA input file (OMU.in.modxna, Listing 5):
+\begin{lstlisting}[label=input file for modXNA (OMU),caption=OMU.in.modxna, basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+### C2′-OMe-uridine
+DPO OME RUU
+\end{lstlisting}
+Then, run modXNA.sh with:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ modXNA.sh -i OMU.in.modxna -m OMU
+\end{lstlisting}
+
+Create a new directory with the name OMC. Inside the directory, create the modXNA input file (OMC.in.modxna, Listing 6):
+\begin{lstlisting}[label=input file for modXNA (OMC),caption=OMC.in.modxna, 
+basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+### C2′-OMe-cytosine
+DPO OME DCC
+\end{lstlisting}
+Run the modXNA.sh script inside the OMC directory:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ modXNA.sh -i OMC.in.modxna -m OMC
+\end{lstlisting}
+
+We can open the files OMU/tmp.opt.pdb and OMC/tmp.opt.pdb and confirm that both nucleotides have been created correctly (Figure 6). 
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure5.png}
+    \caption{Left: OMU, right: OMC. Both structures are named tmp.opt.pdb, created using modXNA}
+    \label{fig:6}
+\end{figure}
+
+These residues are positions OMU11, OMC12 and OMC17 of the anti-sense strand (B chain) of the original 1NAO structure. To generate the 5’-terminal OMG residue, we can use the  modXNA script with the option \verb|--5cap|. We are also going to use the 5PO backbone module to specify the 5' cap. We are going to name the 5’-terminal residue 5MG, to not confuse with a central fragment. Create a new folder with the name 5MG, as well as the modXNA input file (5MG.in.modxna, Listing 7):
+\begin{lstlisting}[label=input file for modXNA (5MG),caption=5MG.in.modxna, 
+basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+### 5' C2′-OMe-guanine
+5PO OME DGG
+\end{lstlisting}
+Run the modXNA.sh script inside the 5MG directory:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ modXNA.sh -i 5MG.in.modxna -m 5MG --5cap
+\end{lstlisting}
+
+Notice the extra flag \verb|--5cap| and the 5PO backbone module are both specified to indicate to modXNA that we want a 5’-terminal residue. A 5' residue must have a companion 3' residue for the charge on the entire system to be an integer. For the 3’-terminal residue, create a new folder with the name 3MC and create the modXNA input file (3MC.in.modxna, Listing 8):
+\begin{lstlisting}[label=input file for modXNA (3MC),caption=3MC.in.modxna, 
+basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+### C2′-OMe-cytosine
+DPO OME DCC
+\end{lstlisting}
+And run modXNA:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ modXNA.sh -i 3MC.in.modxna -m 3MC --3cap
+\end{lstlisting}
+
+Notice the extra flag \verb|--3cap| to indicate to modXNA that we want a 3’-terminal residue. The resulting 5’-terminal and 3’-terminal are shown in Figure 7. Note that a 5'terminal requires a 3'terminal counterpart, otherwise the charge on the molecule will not be an integer. We now have all the required library files (5MG.lib, OMU.lib, OMC.lib and 3MC.lib) to build the RNA-DNA hybrid that matches the structure.
+
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure6-new.png}
+    \caption{Left: 5’ terminal 5MG residue. Right: 3’ terminal 3MC residue. Both are the tmp.opt.pdb files created by modXNA.}
+    \label{fig:7}
+\end{figure}
+
+To build the RNA-DNA hybrid 1NAO, we will first combine the different lib files into a single file. To do this, create the following text file (create-1nao-lib.tleap, Listing 9):
+\begin{lstlisting}[label=input file for combining libraries,caption=create-1nao-lib.tleap, 
+basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+loadoff 3MC/3MC.lib
+saveoff 3MC 1NAO.lib
+loadoff 5MG/5MG.lib
+saveoff 5MG 1NAO.lib
+loadoff OMC/OMC.lib
+saveoff OMC 1NAO.lib
+loadoff OMU/OMU.lib
+saveoff OMU 1NAO.lib
+quit
+\end{lstlisting}
+Run the file with:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ tleap -s -f create-1nao-lib.tleap
+\end{lstlisting}
+
+The second thing we must do is edit the FromPrepForLeap.pdb file to denote 5' and 3' terminal residues. Copy FromPrepForLeap.pdb to EditTerminiFromPrepForLeap.pdb and change the following residue names: OMG 10 to 5MG, OMC 18 to 3MC. 
+
+Once these two steps are completed, we can create input for tleap and build the parmtop and crd files, as shown below (Build1nao.tleap, Listing 10).
+\begin{lstlisting}[label=input file for tleap,caption=Build1nao.tleap, 
+basicstyle=\small, breaklines=true,breakindent=0pt, backgroundcolor=\color{light-gray}]
+###########################
+source leaprc.DNA.OL15
+source leaprc.RNA.OL3
+source leaprc.water.opc
+###########################
+loadoff 1NAO.lib
+loadamberparams /home/user/modXNA/dat/frcmod.modxna
+###########################
+x = loadpdb EditTerminiFromPrepForLeap.pdb
+solvateoct x OPCBOX 9.0
+addionsrand x Na+ 0
+saveamberparm x 1nao.parm7 1nao.rst7
+quit
+\end{lstlisting}
+
+\subsection{Building a new modified sequence}
+In this next example, we will use modXNA to build a single strand antisense oligonucleotide (ASO) that complements with an RNA target. The visual representation of the ASO is depicted in Figure 8.
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure7.jpg}
+    \caption{Sketch representation of the ASO. Sugar modifications: Blue is cET (k), red is C2’-O-methyl (m) and orange is C2’-O-methoxyethyl (e). Backbone modifications: red circle between the bases is phosphate linkage and grey circle with an ‘s’ is Phosphorothioate linkage. The \textsuperscript{m}C is 5 methyl cytosine.}
+    \label{fig:8}
+\end{figure}
+
+ASOs are typically heavily modified and contain a hybrid DNA-RNA-DNA strand. In the example here, the modifications include a 5 methyl cytosine base (M5C) modification, a gapmer (CET) sugar modification, a 2’-O-methoxyethyl (MOE) sugar modification, a 2’-O-methyl (OME) sugar modification, and a phosphorothioate (PS1) backbone modification. To build the ASO, we need the above modifications combined into the following new nucleotides: 5CG, CEG, MEC, MOG, MOA, POG, POA, MSC, OMU, 3EC, detailed in Table 2.
+
+\begin{table*}[ht] 
+\centering
+\caption{Description of input file modules for building four modified residues in model ASO.}
+\label{tab:nicematrix_final}
+\begin{NiceTabular}[hvlines]{|>{\centering\arraybackslash}m{2.0cm}|
+                                  >{\centering\arraybackslash}m{2cm}|
+                                  >{\centering\arraybackslash}m{2cm}|
+                                  >{\centering\arraybackslash}m{2cm}|
+                                  >{\centering\arraybackslash}m{4.5cm}|
+                                  >{\centering\arraybackslash}m{2cm}|}
+\makecell{Residue \\name} & 
+\makecell{Backbone \\fragment\\ code} & 
+\makecell{Sugar \\fragment \\code} & 
+\makecell{Base \\fragment \\code} & 
+\makecell{Details of\\fragments } & 
+\makecell{Notes} \\ 
+5CG & 5PO & CET & RGG & Phosphate backbone + cET + guanine & 5'-terminal \\ 
+CEG & RPO & CET & RGG & Phosphate backbone + cET + guanine & Central residue\\ 
+MEC & RPO & CET & M5C & Phosphate backbone + cET + 5 methyl cytosine & Central residue\\ 
+MOG & RPO & MOE & RGG & Phosphate backbone + MOE + guanine & Central residue\\ 
+MOA & RPO & MOE & RAA & Phosphate backbone + MOE + adenine & Central residue\\ 
+POG & PS1 & MOE & RGG & Phosphorothioate (S) backbone + MOE + guanine & Central residue\\ 
+POA & PS1 & MOE & RAA & Phosphorothioate (S) backbone + MOE + adenine& Central residue\\ 
+MSC & PS1 & CET & M5C & Phosphorothioate (S) backbone + cET + 5 methyl cytosine & Central residue\\ 
+OMU & PS1 & OME & RUU & Phosphorothioate (S) backbone + O-methyl + uracil & Central residue\\
+3EC & PS1 & CET & M5C & Phosphorothioate (S) backbone + cET + 5 methyl cytosine & 3'-terminal\\ 
+\end{NiceTabular}
+\end{table*}
+
+All the new residues follow the same procedure:
+\begin{enumerate}
+    \item Make a new folder (to keep things organized) with the new residue name (i. e. 5CG)
+    \item In the new folder, make a modXNA input file with the fragment code of the backbone, sugar and base (5CG.in.modxna with the codes: 5PO CET DGG, for the residue 5CG)
+    \item Run modXNA (remember to use the \verb|--5cap| for the 5CG residue and \verb|--3cap| flag for the 3EC residue):
+    \begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ modXNA.sh -i 5CG.in.modxna -m 5CG --5cap
+    \end{lstlisting}
+    \item Check that the new residues have been built successfully by opening the tmp.opt.pdb structure.
+\end{enumerate}
+
+
+The resulting structures are shown in Figure 9. Before we can use these 10 library files, we need to combine all the different LIB files into a single file. This will make it easier to load just one bigger LIB file into LEaP instead of loading 10 independent LIB files. To do this, create the text file (create-ASO-lib.tleap, Listing 11):
+\begin{lstlisting}[label=input file for combining libraries,caption=create-ASO-lib.tleap, 
+basicstyle=\small, breaklines=true, backgroundcolor=\color{light-gray}]
+loadoff 3EC/3EC.lib
+saveoff 3EC ASO.lib
+loadoff 5CG/5CG.lib
+saveoff 5CG ASO.lib
+loadoff CEG/CEG.lib
+saveoff CEG ASO.lib
+loadoff MEC/MEC.lib
+saveoff MEC ASO.lib
+loadoff MOA/MOA.lib
+saveoff MOA ASO.lib
+loadoff MOG/MOG.lib
+saveoff MOG ASO.lib
+loadoff MSC/MSC.lib
+saveoff MSC ASO.lib
+loadoff OMU/OMU.lib
+saveoff OMU ASO.lib
+loadoff POA/POA.lib
+saveoff POA ASO.lib
+loadoff POG/POG.lib
+saveoff POG ASO.lib
+quit
+\end{lstlisting}
+Run the file with:
+\begin{lstlisting}[style=MyBash, breaklines=true, breakindent=0pt]
+$ tleap -s -f create-ASO-lib.tleap
+\end{lstlisting}
+
+This will load all the LIB files we created with modXNA and save the information into the same ‘ASO.lib’ file. If you inspect the ASO.lib file generated by tleap, you will see that all the new residues are in one single file. 
+
+Now that we have all the required nucleotides, we need to build the ASO. There are several methodologies that we can use to proceed. The simplest one is generating a single strand with the correct sequence of nucleotide analogs using the ‘sequence’ command available in LEaP, using the following script (Aso-single-strand.tleap, Listing 12):
+\begin{lstlisting}[label=input file for tleap,caption=Aso-single-strand.tleap, 
+basicstyle=\small, breaklines=true,breakindent=0pt, backgroundcolor=\color{light-gray}]
+###########################
+source leaprc.DNA.OL24
+source leaprc.RNA.OL3
+source leaprc.water.opc
+###########################
+loadoff ASO.lib
+loadamberparams /home/user/modXNA/dat/frcmod.modxna
+###########################
+ASO=sequence{5CG CEG MEC MOG MOA MOG POG POA MSC OMU 3EC}
+solvateoct ASO OPCBOX 9.0
+addionsrand ASO Na+ 0
+addionsrand ASO Cl- 0
+saveamberparm ASO ASO-ss.parm7 ASO-ss.crd
+quit
+\end{lstlisting}
+
+\begin{figure}[h!] 
+    \includegraphics[width=\columnwidth]{figures/figure8.png}
+    \caption{Visualizations of all the tmp.opt.pdb files generated by modXNA for each of the new nucleotides.}
+    \label{fig:9}
+\end{figure}
+
+LEaP will create a linearized structure with the correct sequence of residues. It will have some structural overlaps, however, and if we run a quick structural minimization using AMBER/sander (using the 9-step protocol from AmberMDPrep \cite{Roe2020}), we obtain a structure with no clashes, shown in Figure 10. 
+
+\section{Conclusions}
+In the above tutorial, we have outlined the use of modXNA.sh, a script and database of pre-parameterized modules, in order to create bespoke modified nucleotides. We have shown examples of building structures pulled from the PDB, which contain modified residues (1NAO and 6I1W), as well as using the program to create a heavily modified single stranded RNA ASO. We have outlined the procedure as well as identified some common pitfalls. While we know that building new residues for MD simulations can be difficult, we hope this work streamlines the process and decreases the time-to-simulating for users. Users can make use of the ParmEd package from AmberTools (https://github.com/ParmEd/ParmEd) to convert the AMBER topology and coordinates into a format suitable for Gromacs or Charmm/OpenMM/NAMD. We strongly caution users that they should check single point energies before and after conversion to assure they match. Users should consider this tutorial as a starting point for simulations, and proceed to validate the parameters from modXNA in a way that best addresses the problem they are investigating, using these citations \cite{{Linzer2024}, {Bergonzo2025}, {Winkler2023}, {Love2023}, {Bergonzo2019}} as examples.
+
+\begin{figure}[h] 
+    \includegraphics[width=\columnwidth]{figures/figure9.png}
+    \caption{Top: PDB structure generated directly from the ASO-single-strand.parm7 and ASO-single-strand.crd. Bottom: structure obtained after running minimization/equilibration using AmberMDPrep.}
+    \label{fig:criteria12}
+\end{figure}
+
+\section{Content and links}
+
+All scripts used in this tutorial as well as the modXNA script are available at:\\
+\href{https://github.com/ManghraniA/ModXNALiveComs}{https://github.com/ManghraniA/ModXNALiveComs}
+
+\noindent
+modXNA is available at:\\
+\href{https://modxna.chpc.utah.edu}{https://modxna.chpc.utah.edu}
+\noindent
+
+\noindent
+AmberTools can be installed through conda or by downloading the source code and compiling with CMake. Instructions for installing AmberTools are available at:\\
+\href{https://ambermd.org/Installation.php}{https://ambermd.org/Installation.php}
+\noindent
+
+\noindent
+For questions, to report an issue, or to recommend a new fragment, please contact us at:\\
+modxnainfo@gmail.com
+\noindent
+
+\section*{Author Contributions}
+%%%%%%%%%%%%%%%%
+% This section mustt describe the actual contributions of
+% author. Since this is an electronic-only journal, there is
+% no length limit when you describe the authors' contributions,
+% so we recommend describing what they actually did rather than
+% simply categorizing them in a small number of
+% predefined roles as might be done in other journals.
+%
+% See the policies ``Policies on Authorship'' section of https://livecoms.github.io
+% for more information on deciding on authorship and author order.
+%%%%%%%%%%%%%%%%
+
+CB and RGM wrote the manuscript; RGM performed simulations; DRR, PDD, TEC3, OL, and AM contributed to proofreading and testing; AM formatted for publication.
+
+\section*{Potentially Conflicting Interests}
+%%%%%%%
+%Declare any potentially competing interests, financial or otherwise
+%%%%%%%
+
+The authors declare no competing financial interest.
+
+\section*{Funding Information}
+%%%%%%%
+% Authors should acknowledge funding sources here. Reference specific grants.
+%%%%%%%
+The authors gratefully acknowledge the computing and data resources from the Center for High-Performance Computing at the University of Utah and the University of Maryland at IBBR. Funding for this research came from the National Institutes of Health R-01 GM-081411. D.R.R. was funded through NHLBI. P.D.D. was funded through CSIC I+D 22520220100376UD. 
+
+\section*{Disclaimer}
+This article was funded by the National Institute of Standards and Technology and is not subject to U.S. Copyright. Certain commercial equipment, instruments, software, or materials are identified in this paper to foster understanding. Such identification does not imply recommendation or endorsement by the National Institute of Standards and Technology, nor does it imply that the materials or equipment identified are necessarily the best available for the purpose.
+
+\section*{Author Information}
+\makeorcid
+
+\bibliography{ModXNA_Livecoms.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\appendix
+
+
+\end{document}
