@@ -4,7 +4,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% PREAMBLE
 
-\documentclass[9pt,tutorial]{livecoms}
+\documentclass[9pt,tutorial,pubversion]{livecoms}
 % Use the 'onehalfspacing' option for 1.5 line spacing
 % Use the 'doublespacing' option for 2.0 line spacing
 % Use the 'lineno' option for adding line numbers.
@@ -74,7 +74,7 @@
 
 \author[1]{Rodrigo Galindo-Murillo}
 \author[2]{Akanksha Manghrani}
-\author[3]{Daniel Roe}
+\author[3]{Daniel R. Roe}
 \author[4]{Olivia Love}
 \author[5]{Pablo D. Dans}
 \author[4]{Thomas E. Cheatham III}
@@ -105,13 +105,13 @@
 %%% Fill out these parameters when available
 %%% These are used when the "pubversion" option is invoked
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pubDOI{10.XXXX/YYYYYYY}
-\pubvolume{<volume>}
-\pubissue{<issue>}
-\pubyear{<year>}
-\articlenum{<number>}
-\datereceived{Day Month Year}
-\dateaccepted{Day Month Year}
+\pubDOI{10.33011/livecoms.6.1.4545}
+\pubvolume{6}
+\pubissue{1}
+\pubyear{2025}
+\articlenum{4545}
+\datereceived{08 September 2025}
+\dateaccepted{19 December 2025}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% ARTICLE START
@@ -171,7 +171,7 @@ In addition to charge assignment for atoms in each module, the other parameters 
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{figures/ModXNA general pipeline copy.png}
+    \includegraphics[width=\textwidth]{figures/ModXNA_general_pipeline.png}
     \caption{ModXNA overall pipeline flowchart. Part 1 - Users will need to define their residue by comparison to the modXNA catalog. Part 2 - Users will need to build their modified nucleotides with modXNA.sh. Part 3 - To be done concurrently with Part 2, users should visually inspect the modified nucleotide. Part 4- Use the library files built in Part 2 along with frcmod.modxna to build a system parameter and coordinate file pair using LEaP. }
     \label{fig:4}
 \end{figure*}
